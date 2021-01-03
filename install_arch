@@ -1,0 +1,86 @@
+#!/bin/bash
+
+if  ! ping -c1 8.8.8.8 >/dev/null;
+then
+  echo "Your internet connection fails!!!"
+  echo "Please connect to internet."
+  exit
+else
+  echo "Internet connection done."
+fi
+
+timedatectl set-ntp true
+echo
+echo "Your time status:"
+timedatectl status
+
+fdisk -l | grep Disk
+echo "Enter the disk name "
+read name_d
+echo "Will be created partition on /dev/$name_d"
+echo "/boot (esp) 512Mb"
+echo "swap 6Gb"
+echo "/ 100Gb(f2fs)"
+echo "/home all other(f2fs)"
+read t
+(
+    echo o;
+    echo y;
+
+    echo x;
+    echo l;
+    echo 40;
+    echo m;
+
+    echo n;
+    echo;
+    echo;
+    echo +300M;
+    echo ef00;
+
+    echo n;
+    echo;
+    echo;
+    echo +6G;
+    echo 8200;
+
+    echo n;
+    echo;
+    echo;
+    echo +90G;
+
+    echo 8304;
+    echo n;
+    echo;
+    echo;
+    echo -10G;
+    echo 8302;
+    echo w;
+    echo y;
+)
+sudo gdisk /dev/$name_d
+# if name_d == 'nvme0n1'
+# then
+#   p = 'p'
+# else
+#   p = ''
+# fi
+echo "Format disk and mount on /mnt"
+mkfs.fat32 /dev/$name_d\p1
+mkswap /dev/$name_d\p2
+swapon /dev/$name_d\p2
+mkfs.f2fs /dev/$name_d\p3
+mkfs.f2fs /dev/$name_d\p4
+mount /dev/$name_d\p3 /mnt
+mkdir /mnt/home
+mkdir /mnt/boot
+mount /dev/$name_d\p1 /mnt/boot
+mount /dev/$name_d\p4 /mnt/home
+
+echo "Install base package"
+pacstrap /mnt base base-devel linux linux-firmware nano netctl dhcpcd intel-ucode zsh
+
+echo "Setting system"
+genfstab -U /mnt >> /mnt/etc/fstab
+
+arch-chroot /mnt bash -c "$(curl -fsSL )"
