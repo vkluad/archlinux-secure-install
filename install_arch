@@ -77,9 +77,12 @@ mkdir /mnt/boot
 mount /dev/$name_d\p1 /mnt/boot
 mount /dev/$name_d\p4 /mnt/home
 
+echo "Refresh mirror list"
+reflector --verbose --country 'Ukraine' --sort rate --save /etc/pacman.d/mirrorlist
 echo "Install base package"
-pacstrap /mnt base base-devel linux linux-firmware nano netctl dhcpcd intel-ucode zsh
-
+pacstrap /mnt base base-devel linux linux-firmware nano netctl dhcpcd intel-ucode\
+zsh reflector pacman-contrib
+cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
 echo "Setting system"
 genfstab -U /mnt >> /mnt/etc/fstab
 
