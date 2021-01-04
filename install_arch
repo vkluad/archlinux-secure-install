@@ -27,7 +27,7 @@ while [[ $I != 1 ]]; do
   for NAME_D_T in "sda" "vda" "nvme0n1"
   do
     if [[ $NAME_D == $NAME_D_T ]]; then
-      if [[ fdisk -l | grep "$NAME_D" ]]; then
+      if [[ "$(fdisk -l | grep "$NAME_D")" ]]; then
         I=1
       else
         echo "Please enter Disk of "
