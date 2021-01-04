@@ -60,19 +60,19 @@ read t
     echo y;
 ) | gdisk /dev/$name_d
 
-# if name_d == 'nvme0n1'
-# then
-#   p = 'p'
-# else
-#   p = ''
-# fi
+if name_d == 'nvme0n1'
+then
+  p = 'p'
+else
+  p = ''
+fi
 echo "Format disk and mount on /mnt"
-mkfs.fat32 /dev/$name_d\p1
-mkswap /dev/$name_d\p2
-swapon /dev/$name_d\p2
-mkfs.f2fs /dev/$name_d\p3
-mkfs.f2fs /dev/$name_d\p4
-mount /dev/$name_d\p3 /mnt
+mkfs.fat32 /dev/$name_d$p\1
+mkswap /dev/$name_d$p\2
+swapon /dev/$name_d$p\2
+mkfs.f2fs /dev/$name_d$p\3
+mkfs.f2fs /dev/$name_d$p\4
+mount /dev/$name_d$p\3 /mnt
 mkdir /mnt/home
 mkdir /mnt/boot
 mount /dev/$name_d\p1 /mnt/boot
@@ -91,5 +91,3 @@ echo "Setting system"
 genfstab -U /mnt >> /mnt/etc/fstab
 
 arch-chroot /mnt bash -c "$(curl -fsSL https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/two_install_arch)"
-
-# Налякані чужим голосом птахи літали над головою соломіЇ
