@@ -30,7 +30,8 @@ while [[ $I != 1 ]]; do
       if [[ "$(fdisk -l | grep "$NAME_D")" ]]; then
         I=1
       else
-        echo "Please enter Disk of "
+        echo
+        echo "Please enter Disk in "
         echo
         fdisk -l | grep "Disk /"
       fi
@@ -39,17 +40,29 @@ while [[ $I != 1 ]]; do
   done
 done
 
+echo "#####################################################"
 echo "Will be created partition on /dev/$NAME_D"
+
 echo "Start sector for gpt ssd is 40"
-#
-# echo "If your wanna change start sector please enter y/N "
-# read ch
-# if [[ ch == 'y' || ch == 'Y' ]]
-# then
-#   echo "Please enter the start setion (34(for gpt 512b), 40 for gpt 4K) default 40:"
-#   read START_SEC
-# fi
-#
+
+echo "#####################################################"
+echo "If your wanna change start sector please enter y/N "
+read CH_SEC
+if [ $CH_SEC == 'y' ]
+then
+  echo "Please enter the start setion (34(for gpt 512b), 40 for gpt 4K) default 40:"
+  read START_SEC_T
+  if [ $START_SEC_T > 33 ]
+  then
+    START_SEC=$START_SEC_T
+  else
+    echo "40 is default start sector now"
+  fi
+fi
+
+
+
+read stop
 BOOT_SIZE=300M
 SWAP_SIZE=6G
 ROOT_SIZE=90G
@@ -63,29 +76,36 @@ echo
 
 echo "if your wanna change please enter y/N"
 read ch
-if $ch=='y' || $ch=='Y'
+if [ $ch=='y' ]
 then
 
   echo "Please enter size of /boot partition(recommented minimum size 300M)"
   read BOOT_SIZE_T
-  if $BOOT_SIZE_T>100M
+  if [ $BOOT_SIZE_T > "100M" ]
   then
     BOOT_SIZE=$BOOT_SIZE_T
+  else
+    echo "system selected default value($BOOT_SIZE)"
   fi
 
   echo "Please enter size of swap partiotion(recommented minimum size 3G)"
   read SWAP_SIZE_T
-  if $SWAP_SIZE_T>3G
+  if [ $SWAP_SIZE_T > "3G" ]
   then
     SWAP_SIZE=$SWAP_SIZE_T
+  else
+    echo "system selected default value($SWAP_SIZE)"
   fi
 
   echo "Please enter size of root partiotion(recommented minimum size 25G)"
   read ROOT_SIZE_T
-  if $ROOT_SIZE_T>25G
+  if [ "$ROOT_SIZE_T" > "25G" ]
   then
     ROOT_SIZE=$ROOT_SIZE_T
+  else
+    echo "system selected default value($ROOT_SIZE)"
   fi
+
   echo "Home partition will be created of all free size -$HOME_SIZE"
 
 fi
@@ -98,7 +118,7 @@ read t
 
     echo x;
     echo l;
-    echo 40;
+    echo $START_SEC;
     echo m;
 
     echo n;
