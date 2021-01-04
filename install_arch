@@ -22,7 +22,7 @@ NAME_D="0"
 while [[ $NAME_D != "sda" ]] # || $NAME_D != "vda" || $NAME_D != "nvme0n1" ]]
 do
   echo "Enter the disk name "
-  read NAME_D
+  read $NAME_D
 done
 
 echo "Will be created partition on /dev/$NAME_D"
