@@ -48,7 +48,7 @@ echo
 echo "#####################################################"
 echo "If your wanna change start sector please enter y/N "
 read CH_SEC
-if [ $CH_SEC == 'y' ]
+if [ "$CH_SEC" == "y" ]
 then
   echo "Please enter the start setion (34(for gpt 512b), 40 for gpt 4K) default 40:"
   read START_SEC_T
@@ -75,13 +75,13 @@ echo "/home all other + $HOME_SIZE(f2fs)"
 echo
 
 echo "If your wanna change please enter y/N"
-read ch
-if [ $ch=='y' ]
+read CH
+if [ $CH == "y" ]
 then
 
   echo "Please enter size of /boot partition(recommented minimum size 300M)"
   read BOOT_SIZE_T
-  if [ $BOOT_SIZE_T > "100M" ]
+  if [ "$BOOT_SIZE_T" > "100M" ]
   then
     BOOT_SIZE=$BOOT_SIZE_T
   else
@@ -90,7 +90,7 @@ then
 
   echo "Please enter size of swap partiotion(recommented minimum size 3G)"
   read SWAP_SIZE_T
-  if [ $SWAP_SIZE_T > "3G" ]
+  if [ "$SWAP_SIZE_T" > "3G" ]
   then
     SWAP_SIZE=$SWAP_SIZE_T
   else
