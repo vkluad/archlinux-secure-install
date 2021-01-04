@@ -1,4 +1,5 @@
 #!/bin/bash
+# This script created specially for gpt disk and ssd
 
 if  ! ping -c1 8.8.8.8 >/dev/null;
 then
@@ -15,13 +16,64 @@ echo "Your time status:"
 timedatectl status
 
 fdisk -l | grep Disk
+start_sec = 40
+while name_d != 'sda' || name_d != 'vda' || name_d != 'nvme0n1' 
+do
 echo "Enter the disk name "
 read name_d
+done
+
 echo "Will be created partition on /dev/$name_d"
-echo "/boot (esp) 512Mb"
-echo "swap 6Gb"
-echo "/ 100Gb(f2fs)"
-echo "/home all other(f2fs)"
+echo "Start sector for gpt ssd is 40"
+#
+# echo "If your wanna change start sector please enter y/N "
+# read ch
+# if [[ ch == 'y' || ch == 'Y' ]]
+# then
+#   echo "Please enter the start setion (34(for gpt 512b), 40 for gpt 4K) default 40:"
+#   read start_sec
+# fi
+#
+boot_size = 300M
+swap_size = 6G
+root_size = 90G
+home_size = 10G
+
+echo "/boot (esp) $boot_size"
+echo "swap $swap_size"
+echo "/ $root_size(f2fs)"
+echo "/home all other + $home_size(f2fs)"
+echo
+
+echo "if your wanna change please enter y/N"
+read ch
+if ch == 'y' || ch == 'Y'
+then
+
+  echo "Please enter size of /boot partition(recommented minimum size 300M)"
+  read boot_size_t
+  if boot_size_t > 100M
+  then
+    boot_size = boot_size_t
+  fi
+
+  echo "Please enter size of swap partiotion(recommented minimum size 3G)"
+  read swap_size_t
+  if swap_size_t > 3G
+  then
+    swap_size = swap_size_t
+  fi
+
+  echo "Please enter size of root partiotion(recommented minimum size 25G)"
+  read root_size_t
+  if root_size_t > 25G
+  then
+    root_size = root_size_t
+  fi
+  echo "Home partition will be created of all free size -$home_size"
+
+fi
+echo "Press enter to continue"
 read t
 
 (
@@ -36,25 +88,25 @@ read t
     echo n;
     echo;
     echo;
-    echo +300M;
+    echo +$boot_size;
     echo ef00;
 
     echo n;
     echo;
     echo;
-    echo +6G;
+    echo +$swap_size;
     echo 8200;
 
     echo n;
     echo;
     echo;
-    echo +90G;
+    echo +$root_size;
 
     echo 8304;
     echo n;
     echo;
     echo;
-    echo -10G;
+    echo -$home_size;
     echo 8302;
     echo w;
     echo y;
@@ -66,6 +118,7 @@ then
 else
   p = ''
 fi
+
 echo "Format disk and mount on /mnt"
 mkfs.fat32 /dev/$name_d$p\1
 mkswap /dev/$name_d$p\2
@@ -89,5 +142,5 @@ cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
 
 echo "Setting system"
 genfstab -U /mnt >> /mnt/etc/fstab
-
+echo "Chroot enter"
 arch-chroot /mnt bash -c "$(curl -fsSL https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/two_install_arch)"
