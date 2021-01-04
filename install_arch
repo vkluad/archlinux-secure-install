@@ -18,11 +18,11 @@ timedatectl status
 
 fdisk -l | grep Disk
 START_SEC=40
-NAME_D="0"
-while  [ [ "$NAME_D" != "sda" ] || [ "$NAME_D" != "vda" ] ] 
-do
+NAME_D=""
+
+
+while [[ $NAME_D in ["sda","vda","nvme0n1"] ]]; do
   echo "Enter the disk name "
-  echo "$NAME_D";
   read NAME_D
 done
 
