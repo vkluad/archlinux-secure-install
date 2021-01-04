@@ -166,7 +166,7 @@ mkdir /mnt/home
 mkdir /mnt/boot
 mount /dev/$NAME_D$P\1 /mnt/boot
 mount /dev/$NAME_D$P\4 /mnt/home
-
+echo "please enter to continiue"
 sleep 3
 
 echo "Refresh mirror list"
