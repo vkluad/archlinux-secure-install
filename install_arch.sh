@@ -76,7 +76,7 @@ echo
 
 echo "If your wanna change please enter y/N"
 read CH
-if [ $CH = "y" ]
+if [ "$CH" = "y" ]
 then
 
   echo "Please enter size of /boot partition(recommented minimum size 300M)"
