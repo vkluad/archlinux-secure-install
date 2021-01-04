@@ -166,7 +166,7 @@ mkdir /mnt/home
 mkdir /mnt/boot
 mount /dev/$NAME_D$P\1 /mnt/boot
 mount /dev/$NAME_D$P\4 /mnt/home
-echo "please enter to continiue"
+echo "please enter to continue"
 read STOP;
 sleep 3
 
@@ -175,7 +175,7 @@ reflector --verbose --country 'Ukraine' --sort rate --save /etc/pacman.d/mirrorl
 sleep 2
 
 echo "Install base package"
-pacstrap /mnt base base-devel linux linux-firmware nano netctl dhcpcd intel-ucode zsh reflector f2fs-tools
+pacstrap /mnt base base-devel linux linux-firmware nano netctl dhcpcd intel-ucode zsh reflector f2fs-tools sudo
 sleep 2
 
 echo "Copying mirrorlist"
