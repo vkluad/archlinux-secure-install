@@ -75,8 +75,8 @@ mkfs.f2fs /dev/$name_d$p\4
 mount /dev/$name_d$p\3 /mnt
 mkdir /mnt/home
 mkdir /mnt/boot
-mount /dev/$name_d\p1 /mnt/boot
-mount /dev/$name_d\p4 /mnt/home
+mount /dev/$name_d$p\1 /mnt/boot
+mount /dev/$name_d$p\4 /mnt/home
 
 echo "Refresh mirror list"
 reflector --verbose --country 'Ukraine' --sort rate --save /etc/pacman.d/mirrorlist
