@@ -26,7 +26,7 @@ while [[ $I != 1 ]]; do
   read NAME_D
   for NAME_D_T in "sda" "vda" "nvme0n1"
   do
-    if [[ $NAME_D == $NAME_D_T ]]; then
+    if [[ $NAME_D = $NAME_D_T ]]; then
       if [[ "$(fdisk -l | grep "$NAME_D")" ]]; then
         I=1
       else
@@ -76,7 +76,7 @@ echo
 
 echo "If your wanna change please enter y/N"
 read CH
-if [ $CH == "y" ]
+if [ $CH = "y" ]
 then
 
   echo "Please enter size of /boot partition(recommented minimum size 300M)"
@@ -148,7 +148,7 @@ read STOP
     echo y;
 ) | gdisk /dev/$NAME_D
 
-if [ "$NAME_D" == "nvme0n1" ]
+if [ "$NAME_D" = "nvme0n1" ]
 then
   P='p'
 else
