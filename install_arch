@@ -23,6 +23,7 @@ echo "swap 6Gb"
 echo "/ 100Gb(f2fs)"
 echo "/home all other(f2fs)"
 read t
+sudo gdisk /dev/$name_d
 (
     echo o;
     echo y;
@@ -57,7 +58,8 @@ read t
     echo 8302;
     echo w;
     echo y;
-) | sudo gdisk /dev/$name_d
+)
+
 # if name_d == 'nvme0n1'
 # then
 #   p = 'p'
