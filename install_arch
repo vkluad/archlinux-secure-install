@@ -18,7 +18,7 @@ timedatectl status
 NAME_D=''
 fdisk -l | grep Disk
 START_SEC=40
-while NAME_D != 'sda' || NAME_D != 'vda' || NAME_D != 'nvme0n1'
+while [[ $NAME_D!='sda' || $NAME_D!='vda' || $NAME_D!='nvme0n1' ]]
 do
 echo "Enter the disk name "
 read NAME_D
@@ -48,28 +48,28 @@ echo
 
 echo "if your wanna change please enter y/N"
 read ch
-if ch == 'y' || ch == 'Y'
+if $ch=='y' || $ch=='Y'
 then
 
   echo "Please enter size of /boot partition(recommented minimum size 300M)"
   read BOOT_SIZE_T
-  if BOOT_SIZE_T>100M
+  if $BOOT_SIZE_T>100M
   then
-    BOOT_SIZE=BOOT_SIZE_T
+    BOOT_SIZE=$BOOT_SIZE_T
   fi
 
   echo "Please enter size of swap partiotion(recommented minimum size 3G)"
   read SWAP_SIZE_T
-  if SWAP_SIZE_T>3G
+  if $SWAP_SIZE_T>3G
   then
-    SWAP_SIZE=SWAP_SIZE_T
+    SWAP_SIZE=$SWAP_SIZE_T
   fi
 
   echo "Please enter size of root partiotion(recommented minimum size 25G)"
   read ROOT_SIZE_T
-  if ROOT_SIZE_T>25G
+  if $ROOT_SIZE_T>25G
   then
-    ROOT_SIZE=ROOT_SIZE_T
+    ROOT_SIZE=$ROOT_SIZE_T
   fi
   echo "Home partition will be created of all free size -$HOME_SIZE"
 
