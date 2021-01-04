@@ -48,7 +48,7 @@ echo
 echo "#####################################################"
 echo "If your wanna change start sector please enter y/N "
 read CH_SEC
-if [ "$CH_SEC" == "y" ]
+if [ "$CH_SEC" = "y" ]
 then
   echo "Please enter the start setion (34(for gpt 512b), 40 for gpt 4K) default 40:"
   read START_SEC_T
