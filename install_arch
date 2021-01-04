@@ -21,9 +21,15 @@ START_SEC=40
 NAME_D=""
 
 
-while [[ $NAME_D in ["sda","vda","nvme0n1"] ]]; do
+while [[ $I != 1 ]]; do
   echo "Enter the disk name "
   read NAME_D
+  for NAME_D_T in "sda" "vda" "nvme0n1"
+  do
+    if [[ $NAME_D==$NAME_D_T ]]; then
+      I=1
+    fi
+  done
 done
 
 echo "Will be created partition on /dev/$NAME_D"
