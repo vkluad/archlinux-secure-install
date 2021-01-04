@@ -57,8 +57,7 @@ read t
     echo 8302;
     echo w;
     echo y;
-)
-sudo gdisk /dev/$name_d
+) | sudo gdisk /dev/$name_d
 # if name_d == 'nvme0n1'
 # then
 #   p = 'p'
