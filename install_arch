@@ -26,7 +26,7 @@ while [[ $I != 1 ]]; do
   read NAME_D
   for NAME_D_T in "sda" "vda" "nvme0n1"
   do
-    if [[ $NAME_D==$NAME_D_T ]]; then
+    if [[ $NAME_D == $NAME_D_T ]]; then
       I=1
     fi
   done
