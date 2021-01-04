@@ -47,7 +47,7 @@ echo "Start sector for gpt ssd is 40"
 echo
 echo "#####################################################"
 echo "If your wanna change start sector please enter y/N "
-read CH_SEC
+read CH_SEC;
 if [ "$CH_SEC" = "y" ]
 then
   echo "Please enter the start setion (34(for gpt 512b), 40 for gpt 4K) default 40:"
@@ -62,11 +62,11 @@ fi
 
 
 
-read STOP
-BOOT_SIZE=300M
-SWAP_SIZE=6G
-ROOT_SIZE=90G
-HOME_SIZE=10G
+read STOP;
+BOOT_SIZE="300M"
+SWAP_SIZE="6G"
+ROOT_SIZE="90G"
+HOME_SIZE="10G"
 
 echo "/boot (esp) $BOOT_SIZE"
 echo "swap $SWAP_SIZE"
@@ -75,7 +75,7 @@ echo "/home all other + $HOME_SIZE(f2fs)"
 echo
 
 echo "If your wanna change please enter y/N"
-read CH_DISK
+read CH_DISK;
 if [[ "$CH_DISK" = "y" ]]
 then
   echo "Please enter size of /boot partition(recommented minimum size 300M)"
@@ -110,7 +110,7 @@ then
 fi
 
 echo "Press enter to continue"
-read STOP
+read STOP;
 
 (
     echo o;
@@ -167,6 +167,7 @@ mkdir /mnt/boot
 mount /dev/$NAME_D$P\1 /mnt/boot
 mount /dev/$NAME_D$P\4 /mnt/home
 echo "please enter to continiue"
+read STOP;
 sleep 3
 
 echo "Refresh mirror list"
@@ -174,7 +175,7 @@ reflector --verbose --country 'Ukraine' --sort rate --save /etc/pacman.d/mirrorl
 sleep 2
 
 echo "Install base package"
-pacstrap /mnt base base-devel linux linux-firmware nano netctl dhcpcd intel-ucode zsh reflector pacman-contrib
+pacstrap /mnt base base-devel linux linux-firmware nano netctl dhcpcd intel-ucode zsh reflector
 sleep 2
 
 echo "Copying mirrorlist"
@@ -184,4 +185,4 @@ sleep 2
 echo "Setting system"
 genfstab -U /mnt >> /mnt/etc/fstab
 echo "Chroot enter"
-arch-chroot /mnt bash -c "$(curl -fsSL https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/two_install_arch.sh)"
+arch-chroot /mnt bash -c "$(curl -fsSL https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/install_and_setting_arch_out_base.sh)"
