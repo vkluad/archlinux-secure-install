@@ -64,10 +64,12 @@ fi
 
 read STOP;
 BOOT_SIZE="300M"
+SWAP_SIZE="6G"
 ROOT_SIZE="90G"
 HOME_SIZE="10G"
 
 echo "/boot (esp) $BOOT_SIZE"
+echo "swap $SWAP_SIZE"
 echo "/ $ROOT_SIZE(f2fs)"
 echo "/home all other + $HOME_SIZE(f2fs)"
 echo
@@ -83,6 +85,15 @@ then
     BOOT_SIZE=$BOOT_SIZE_T
   else
     echo "System selected default value($BOOT_SIZE)"
+  fi
+
+  echo "Please enter size of swap partiotion(recommented minimum size 3G)"
+  read SWAP_SIZE_T
+  if [ "$SWAP_SIZE_T" > "3G" ]
+  then
+    SWAP_SIZE=$SWAP_SIZE_T
+  else
+    echo "System selected default value($SWAP_SIZE)"
   fi
 
   echo "Please enter size of root partiotion(recommented minimum size 25G)"
@@ -119,6 +130,12 @@ read STOP;
     echo n;
     echo;
     echo;
+    echo +$SWAP_SIZE;
+    echo 8200;
+
+    echo n;
+    echo;
+    echo;
     echo +$ROOT_SIZE;
 
     echo 8304;
@@ -140,13 +157,15 @@ fi
 
 echo "Format disk and mount on /mnt"
 mkfs.vfat /dev/$NAME_D$P\1
-mkfs.f2fs /dev/$NAME_D$P\2
+mkswap /dev/$NAME_D$P\2
+swapon /dev/$NAME_D$P\2
 mkfs.f2fs /dev/$NAME_D$P\3
-mount /dev/$NAME_D$P\2 /mnt
+mkfs.f2fs /dev/$NAME_D$P\4
+mount /dev/$NAME_D$P\3 /mnt
 mkdir /mnt/home
 mkdir /mnt/boot
 mount /dev/$NAME_D$P\1 /mnt/boot
-mount /dev/$NAME_D$P\3 /mnt/home
+mount /dev/$NAME_D$P\4 /mnt/home
 echo "please enter to continiue"
 read STOP;
 sleep 3
