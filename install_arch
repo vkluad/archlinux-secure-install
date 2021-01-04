@@ -17,13 +17,13 @@ timedatectl status
 
 fdisk -l | grep Disk
 start_sec = 40
-while name_d != 'sda' || name_d != 'vda' || name_d != 'nvme0n1' 
+while NAME_D != 'sda' || NAME_D != 'vda' || NAME_D != 'nvme0n1'
 do
 echo "Enter the disk name "
-read name_d
+read NAME_D
 done
 
-echo "Will be created partition on /dev/$name_d"
+echo "Will be created partition on /dev/$NAME_D"
 echo "Start sector for gpt ssd is 40"
 #
 # echo "If your wanna change start sector please enter y/N "
@@ -34,15 +34,15 @@ echo "Start sector for gpt ssd is 40"
 #   read start_sec
 # fi
 #
-boot_size = 300M
-swap_size = 6G
-root_size = 90G
-home_size = 10G
+BOOT_SIZE = 300M
+SWAP_SIZE = 6G
+ROOT_SIZE = 90G
+HOME_SIZE = 10G
 
-echo "/boot (esp) $boot_size"
-echo "swap $swap_size"
-echo "/ $root_size(f2fs)"
-echo "/home all other + $home_size(f2fs)"
+echo "/boot (esp) $BOOT_SIZE"
+echo "swap $SWAP_SIZE"
+echo "/ $ROOT_SIZE(f2fs)"
+echo "/home all other + $HOME_SIZE(f2fs)"
 echo
 
 echo "if your wanna change please enter y/N"
@@ -51,26 +51,26 @@ if ch == 'y' || ch == 'Y'
 then
 
   echo "Please enter size of /boot partition(recommented minimum size 300M)"
-  read boot_size_t
-  if boot_size_t > 100M
+  read BOOT_SIZE_T
+  if BOOT_SIZE_T > 100M
   then
-    boot_size = boot_size_t
+    BOOT_SIZE = BOOT_SIZE_T
   fi
 
   echo "Please enter size of swap partiotion(recommented minimum size 3G)"
-  read swap_size_t
-  if swap_size_t > 3G
+  read SWAP_SIZE_T
+  if SWAP_SIZE_T > 3G
   then
-    swap_size = swap_size_t
+    SWAP_SIZE = SWAP_SIZE_T
   fi
 
   echo "Please enter size of root partiotion(recommented minimum size 25G)"
-  read root_size_t
-  if root_size_t > 25G
+  read ROOT_SIZE_T
+  if ROOT_SIZE_T > 25G
   then
-    root_size = root_size_t
+    ROOT_SIZE = ROOT_SIZE_T
   fi
-  echo "Home partition will be created of all free size -$home_size"
+  echo "Home partition will be created of all free size -$HOME_SIZE"
 
 fi
 echo "Press enter to continue"
@@ -88,31 +88,31 @@ read t
     echo n;
     echo;
     echo;
-    echo +$boot_size;
+    echo +$BOOT_SIZE;
     echo ef00;
 
     echo n;
     echo;
     echo;
-    echo +$swap_size;
+    echo +$SWAP_SIZE;
     echo 8200;
 
     echo n;
     echo;
     echo;
-    echo +$root_size;
+    echo +$ROOT_SIZE;
 
     echo 8304;
     echo n;
     echo;
     echo;
-    echo -$home_size;
+    echo -$HOME_SIZE;
     echo 8302;
     echo w;
     echo y;
-) | gdisk /dev/$name_d
+) | gdisk /dev/$NAME_D
 
-if name_d == 'nvme0n1'
+if NAME_D == 'nvme0n1'
 then
   p = 'p'
 else
@@ -120,16 +120,16 @@ else
 fi
 
 echo "Format disk and mount on /mnt"
-mkfs.fat32 /dev/$name_d$p\1
-mkswap /dev/$name_d$p\2
-swapon /dev/$name_d$p\2
-mkfs.f2fs /dev/$name_d$p\3
-mkfs.f2fs /dev/$name_d$p\4
-mount /dev/$name_d$p\3 /mnt
+mkfs.fat32 /dev/$NAME_D$p\1
+mkswap /dev/$NAME_D$p\2
+swapon /dev/$NAME_D$p\2
+mkfs.f2fs /dev/$NAME_D$p\3
+mkfs.f2fs /dev/$NAME_D$p\4
+mount /dev/$NAME_D$p\3 /mnt
 mkdir /mnt/home
 mkdir /mnt/boot
-mount /dev/$name_d$p\1 /mnt/boot
-mount /dev/$name_d$p\4 /mnt/home
+mount /dev/$NAME_D$p\1 /mnt/boot
+mount /dev/$NAME_D$p\4 /mnt/home
 
 echo "Refresh mirror list"
 reflector --verbose --country 'Ukraine' --sort rate --save /etc/pacman.d/mirrorlist
