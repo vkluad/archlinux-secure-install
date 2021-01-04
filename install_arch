@@ -58,7 +58,7 @@ read t
     echo 8302;
     echo w;
     echo y;
-) gdisk /dev/$name_d
+) | gdisk /dev/$name_d
 
 # if name_d == 'nvme0n1'
 # then
@@ -91,3 +91,5 @@ echo "Setting system"
 genfstab -U /mnt >> /mnt/etc/fstab
 
 arch-chroot /mnt bash -c "$(curl -fsSL https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/two_install_arch)"
+
+# Налякані чужим голосом птахи літали над головою соломіЇ
