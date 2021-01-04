@@ -15,10 +15,10 @@ echo
 echo "Your time status:"
 timedatectl status
 
-NAME_D=''
+NAME_D='0'
 fdisk -l | grep Disk
 START_SEC=40
-while ! [[ $NAME_D=='sda'||$NAME_D=='vda'||$NAME_D=='nvme0n1' ]]
+while [ [$NAME_D!='sda']||[$NAME_D!='vda']||[$NAME_D!='nvme0n1'] ]
 do
 echo "Enter the disk name "
 read NAME_D
