@@ -75,10 +75,9 @@ echo "/home all other + $HOME_SIZE(f2fs)"
 echo
 
 echo "If your wanna change please enter y/N"
-read CH
-if [ "$CH" = "y" ]
+read CH_DISK
+if [[ "$CH_DISK" = "y" ]]
 then
-
   echo "Please enter size of /boot partition(recommented minimum size 300M)"
   read BOOT_SIZE_T
   if [ "$BOOT_SIZE_T" > "100M" ]
@@ -109,6 +108,7 @@ then
   echo "Home partition will be created of all free size -$HOME_SIZE"
 
 fi
+
 echo "Press enter to continue"
 read STOP
 
