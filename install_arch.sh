@@ -64,7 +64,7 @@ fi
 
 read STOP;
 BOOT_SIZE="300M"
-SWAP_SIZE="6G"
+SWAP_SIZE="3G"
 ROOT_SIZE="90G"
 HOME_SIZE="10G"
 
@@ -87,9 +87,9 @@ then
     echo "System selected default value($BOOT_SIZE)"
   fi
 
-  echo "Please enter size of swap partiotion(recommented minimum size 3G)"
+  echo "Please enter size of swap partiotion(recommented minimum size 512M)"
   read SWAP_SIZE_T
-  if [ "$SWAP_SIZE_T" > "3G" ]
+  if [ "$SWAP_SIZE_T" > "512M" ]
   then
     SWAP_SIZE=$SWAP_SIZE_T
   else
@@ -175,7 +175,7 @@ reflector --verbose --country 'Ukraine' --sort rate --save /etc/pacman.d/mirrorl
 sleep 2
 
 echo "Install base package"
-pacstrap /mnt base base-devel linux linux-firmware nano netctl dhcpcd intel-ucode zsh reflector
+pacstrap /mnt base base-devel linux linux-firmware nano netctl dhcpcd intel-ucode zsh reflector f2fs-tools
 sleep 2
 
 echo "Copying mirrorlist"
