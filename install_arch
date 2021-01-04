@@ -16,7 +16,7 @@ echo "Your time status:"
 timedatectl status
 
 
-fdisk -l | grep Disk
+fdisk -l | grep "Disk /"
 START_SEC=40
 NAME_D=""
 
@@ -27,7 +27,14 @@ while [[ $I != 1 ]]; do
   for NAME_D_T in "sda" "vda" "nvme0n1"
   do
     if [[ $NAME_D == $NAME_D_T ]]; then
-      I=1
+      if [[ fdisk -l | grep "$NAME_D" ]]; then
+        I=1
+      else
+        echo "Please enter Disk of "
+        echo
+        fdisk -l | grep "Disk /"
+      fi
+
     fi
   done
 done
