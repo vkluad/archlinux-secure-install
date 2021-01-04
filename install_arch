@@ -15,8 +15,9 @@ echo
 echo "Your time status:"
 timedatectl status
 
+NAME_D=''
 fdisk -l | grep Disk
-start_sec = 40
+START_SEC=40
 while NAME_D != 'sda' || NAME_D != 'vda' || NAME_D != 'nvme0n1'
 do
 echo "Enter the disk name "
@@ -31,13 +32,13 @@ echo "Start sector for gpt ssd is 40"
 # if [[ ch == 'y' || ch == 'Y' ]]
 # then
 #   echo "Please enter the start setion (34(for gpt 512b), 40 for gpt 4K) default 40:"
-#   read start_sec
+#   read START_SEC
 # fi
 #
-BOOT_SIZE = 300M
-SWAP_SIZE = 6G
-ROOT_SIZE = 90G
-HOME_SIZE = 10G
+BOOT_SIZE=300M
+SWAP_SIZE=6G
+ROOT_SIZE=90G
+HOME_SIZE=10G
 
 echo "/boot (esp) $BOOT_SIZE"
 echo "swap $SWAP_SIZE"
@@ -52,23 +53,23 @@ then
 
   echo "Please enter size of /boot partition(recommented minimum size 300M)"
   read BOOT_SIZE_T
-  if BOOT_SIZE_T > 100M
+  if BOOT_SIZE_T>100M
   then
-    BOOT_SIZE = BOOT_SIZE_T
+    BOOT_SIZE=BOOT_SIZE_T
   fi
 
   echo "Please enter size of swap partiotion(recommented minimum size 3G)"
   read SWAP_SIZE_T
-  if SWAP_SIZE_T > 3G
+  if SWAP_SIZE_T>3G
   then
-    SWAP_SIZE = SWAP_SIZE_T
+    SWAP_SIZE=SWAP_SIZE_T
   fi
 
   echo "Please enter size of root partiotion(recommented minimum size 25G)"
   read ROOT_SIZE_T
-  if ROOT_SIZE_T > 25G
+  if ROOT_SIZE_T>25G
   then
-    ROOT_SIZE = ROOT_SIZE_T
+    ROOT_SIZE=ROOT_SIZE_T
   fi
   echo "Home partition will be created of all free size -$HOME_SIZE"
 
@@ -112,24 +113,24 @@ read t
     echo y;
 ) | gdisk /dev/$NAME_D
 
-if NAME_D == 'nvme0n1'
+if NAME_D=='nvme0n1'
 then
-  p = 'p'
+  P='p'
 else
-  p = ''
+  P=''
 fi
 
 echo "Format disk and mount on /mnt"
-mkfs.fat32 /dev/$NAME_D$p\1
-mkswap /dev/$NAME_D$p\2
-swapon /dev/$NAME_D$p\2
-mkfs.f2fs /dev/$NAME_D$p\3
-mkfs.f2fs /dev/$NAME_D$p\4
-mount /dev/$NAME_D$p\3 /mnt
+mkfs.fat32 /dev/$NAME_D$P\1
+mkswap /dev/$NAME_D$P\2
+swapon /dev/$NAME_D$P\2
+mkfs.f2fs /dev/$NAME_D$P\3
+mkfs.f2fs /dev/$NAME_D$P\4
+mount /dev/$NAME_D$P\3 /mnt
 mkdir /mnt/home
 mkdir /mnt/boot
-mount /dev/$NAME_D$p\1 /mnt/boot
-mount /dev/$NAME_D$p\4 /mnt/home
+mount /dev/$NAME_D$P\1 /mnt/boot
+mount /dev/$NAME_D$P\4 /mnt/home
 
 echo "Refresh mirror list"
 reflector --verbose --country 'Ukraine' --sort rate --save /etc/pacman.d/mirrorlist
