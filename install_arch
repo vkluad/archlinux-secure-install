@@ -148,7 +148,7 @@ read STOP
     echo y;
 ) | gdisk /dev/$NAME_D
 
-if [ $NAME_D == "nvme0n1" ]
+if [ "$NAME_D" == "nvme0n1" ]
 then
   P='p'
 else
