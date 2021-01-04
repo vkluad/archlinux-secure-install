@@ -58,7 +58,7 @@ read t
     echo 8302;
     echo w;
     echo y;
-)gdisk /dev/$name_d
+) gdisk /dev/$name_d
 
 # if name_d == 'nvme0n1'
 # then
