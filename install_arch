@@ -14,7 +14,7 @@ timedatectl set-ntp true
 echo
 echo "Your time status:"
 timedatectl status
-
+sleep 2
 
 fdisk -l | grep "Disk /"
 START_SEC=40
@@ -42,9 +42,9 @@ done
 
 echo "#####################################################"
 echo "Will be created partition on /dev/$NAME_D"
-
+echo
 echo "Start sector for gpt ssd is 40"
-
+echo
 echo "#####################################################"
 echo "If your wanna change start sector please enter y/N "
 read CH_SEC
@@ -62,7 +62,7 @@ fi
 
 
 
-read stop
+read STOP
 BOOT_SIZE=300M
 SWAP_SIZE=6G
 ROOT_SIZE=90G
@@ -74,7 +74,7 @@ echo "/ $ROOT_SIZE(f2fs)"
 echo "/home all other + $HOME_SIZE(f2fs)"
 echo
 
-echo "if your wanna change please enter y/N"
+echo "If your wanna change please enter y/N"
 read ch
 if [ $ch=='y' ]
 then
@@ -85,7 +85,7 @@ then
   then
     BOOT_SIZE=$BOOT_SIZE_T
   else
-    echo "system selected default value($BOOT_SIZE)"
+    echo "System selected default value($BOOT_SIZE)"
   fi
 
   echo "Please enter size of swap partiotion(recommented minimum size 3G)"
@@ -94,7 +94,7 @@ then
   then
     SWAP_SIZE=$SWAP_SIZE_T
   else
-    echo "system selected default value($SWAP_SIZE)"
+    echo "System selected default value($SWAP_SIZE)"
   fi
 
   echo "Please enter size of root partiotion(recommented minimum size 25G)"
@@ -103,14 +103,14 @@ then
   then
     ROOT_SIZE=$ROOT_SIZE_T
   else
-    echo "system selected default value($ROOT_SIZE)"
+    echo "System selected default value($ROOT_SIZE)"
   fi
 
   echo "Home partition will be created of all free size -$HOME_SIZE"
 
 fi
 echo "Press enter to continue"
-read t
+read STOP
 
 (
     echo o;
@@ -166,13 +166,12 @@ mkdir /mnt/home
 mkdir /mnt/boot
 mount /dev/$NAME_D$P\1 /mnt/boot
 mount /dev/$NAME_D$P\4 /mnt/home
-
+read STOP
 echo "Refresh mirror list"
 reflector --verbose --country 'Ukraine' --sort rate --save /etc/pacman.d/mirrorlist
 
 echo "Install base package"
-pacstrap /mnt base base-devel linux linux-firmware nano netctl dhcpcd intel-ucode\
-zsh reflector pacman-contrib
+pacstrap /mnt base base-devel linux linux-firmware nano netctl dhcpcd intel-ucode zsh reflector pacman-contrib
 echo "Copying mirrorlist"
 cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
 
