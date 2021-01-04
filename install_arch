@@ -156,7 +156,7 @@ else
 fi
 
 echo "Format disk and mount on /mnt"
-mkfs.fat32 /dev/$NAME_D$P\1
+mkfs.vfat /dev/$NAME_D$P\1
 mkswap /dev/$NAME_D$P\2
 swapon /dev/$NAME_D$P\2
 mkfs.f2fs /dev/$NAME_D$P\3
@@ -166,14 +166,20 @@ mkdir /mnt/home
 mkdir /mnt/boot
 mount /dev/$NAME_D$P\1 /mnt/boot
 mount /dev/$NAME_D$P\4 /mnt/home
-read STOP
+
+sleep 3
+
 echo "Refresh mirror list"
 reflector --verbose --country 'Ukraine' --sort rate --save /etc/pacman.d/mirrorlist
+sleep 2
 
 echo "Install base package"
 pacstrap /mnt base base-devel linux linux-firmware nano netctl dhcpcd intel-ucode zsh reflector pacman-contrib
+sleep 2
+
 echo "Copying mirrorlist"
 cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
+sleep 2
 
 echo "Setting system"
 genfstab -U /mnt >> /mnt/etc/fstab
