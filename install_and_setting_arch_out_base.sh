@@ -6,9 +6,11 @@ read -p "Enter user name: " USERNAME
 
 echo $HOSTNAME > /etc/hostname
 echo "Add user $USERNAME"
-useradd -m -g users -G wheel -s /bin/bash $USERNAME
+useradd -m -g users -G wheel -s /bin/zsh $USERNAME
+
 echo "Password for user $USERNAME"
 passwd $USERNAME
+
 echo "Password for root user"
 passwd
 
