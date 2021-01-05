@@ -7,6 +7,7 @@ read -p "Enter user name: " USERNAME
 echo $HOSTNAME > /etc/hostname
 echo "Add user $USERNAME"
 useradd -m -g users -G wheel -s /bin/zsh $USERNAME
+sed -i 's/.*# %wheel ALL=(ALL) ALL.*/%wheel ALL=(ALL) ALL/' /etc/sudoers
 
 echo "Password for user $USERNAME"
 passwd $USERNAME
@@ -34,5 +35,16 @@ echo 'Recommented library for 32-bit apps'
 echo '[multilib]' >> /etc/pacman.conf
 echo 'Include = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf
 pacman -Syy
+echo "Install bootloader"
+bootctl --path=/boot install
+echo 'default Arch' > /boot/loader/loader.conf
+echo "title\tArch Linux
+linux\t/vmlinuz-linux
+initrd\t/intel-ucode.img
+initrd\t/initramfs-linux.img
+options\troot=PARTUUID=" > /boot/loader/entries/Arch.conf
 
-pacman -S dialog wpa_supplicant
+
+
+
+pacman -Suy dialog wpa_supplicant gnome nvidia wget git
