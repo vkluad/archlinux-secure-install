@@ -65,8 +65,8 @@ fi
 read STOP;
 BOOT_SIZE="300M"
 SWAP_SIZE="3G"
-ROOT_SIZE="90G"
-HOME_SIZE="10G"
+ROOT_SIZE="75G"
+HOME_SIZE="30G"
 
 echo "/boot (esp) $BOOT_SIZE"
 echo "swap $SWAP_SIZE"
