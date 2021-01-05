@@ -168,21 +168,21 @@ mount /dev/$NAME_D$P\1 /mnt/boot
 mount /dev/$NAME_D$P\4 /mnt/home
 echo "please enter to continue"
 read STOP;
-sleep 3
+sleep 3;
 
 echo "Refresh mirror list"
 reflector --verbose --country 'Ukraine' --sort rate --save /etc/pacman.d/mirrorlist
-sleep 2
+sleep 2;
 
 echo "Install base package"
 pacstrap /mnt base base-devel linux linux-firmware nano netctl dhcpcd intel-ucode zsh reflector f2fs-tools sudo
-sleep 2
+sleep 2;
 
 echo "Copying mirrorlist"
 cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
-sleep 2
+sleep 2;
 
 echo "Setting system"
 genfstab -U /mnt >> /mnt/etc/fstab
 echo "Chroot enter"
-# arch-chroot /mnt bash -c "$(curl -fsSL https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/install_and_setting_arch_out_base.sh)"
+arch-chroot /mnt bash -c "$(curl -fsSL https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/install_and_setting_arch_out_base.sh)"
