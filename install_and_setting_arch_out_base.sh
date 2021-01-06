@@ -32,14 +32,16 @@ ff02::1    ip6-allnodes
 ff02::2    ip6-allrouters" >> /etc/hosts
 
 echo 'Recommented library for 32-bit apps'
+# sed -i 's/.*#\[multilib\]\n#Include = /etc/pacman.d/mirrorlist.*/\[multilib\]\nInclude = /etc/pacman.d/mirrorlist/' /etc/pacman.conf
 echo '[multilib]' >> /etc/pacman.conf
 echo 'Include = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf
 pacman -Syy
 echo "Install bootloader"
 bootctl --path=/boot install
-echo 'default Arch' > /boot/loader/loader.conf
 
-PARTUUID="$(blkid /dev/${1}\${2}\2 | sed -n '/.*PARTUUID="/s///;s/"//p')"
+echo "default Arch" > /boot/loader/loader.conf
+
+PARTUUID="$(blkid /dev/$0\$1\2 | sed -n '/.*PARTUUID="/s///;s/"//p')"
 echo "title\tArch Linux
 linux\t/vmlinuz-linux
 initrd\t/intel-ucode.img
@@ -47,6 +49,4 @@ initrd\t/initramfs-linux.img
 options\troot=PARTUUID=$PARTUUID" > /boot/loader/entries/Arch.conf
 
 
-
-
-pacman -Suy dialog wpa_supplicant gnome nvidia wget git
+pacman -Suy dialog wpa_supplicant gnome nvidia nvidia-prime gdm-prime nvidia-settings wget git
