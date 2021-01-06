@@ -156,7 +156,7 @@ else
 fi
 
 echo "Format disk and mount on /mnt"
-mkfs.vfat /dev/$NAME_D$P\1
+mkfs.vfat -S 4096 /dev/$NAME_D$P\1
 mkswap /dev/$NAME_D$P\2
 swapon /dev/$NAME_D$P\2
 mkfs.f2fs /dev/$NAME_D$P\3
@@ -185,4 +185,4 @@ sleep 2;
 echo "Setting system"
 genfstab -U /mnt >> /mnt/etc/fstab
 echo "Chroot enter"
-arch-chroot /mnt bash -c "$(curl -fsSL https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/install_and_setting_arch_out_base.sh)"
+arch-chroot /mnt bash -c "$(curl -fsSL https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/install_and_setting_arch_out_base.sh)" $NAME_D $P

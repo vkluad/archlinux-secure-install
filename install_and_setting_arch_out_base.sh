@@ -38,11 +38,13 @@ pacman -Syy
 echo "Install bootloader"
 bootctl --path=/boot install
 echo 'default Arch' > /boot/loader/loader.conf
+
+PARTUUID="$(blkid /dev/${1}\${2}\2 | sed -n '/.*PARTUUID="/s///;s/"//p')"
 echo "title\tArch Linux
 linux\t/vmlinuz-linux
 initrd\t/intel-ucode.img
 initrd\t/initramfs-linux.img
-options\troot=PARTUUID=" > /boot/loader/entries/Arch.conf
+options\troot=PARTUUID=$PARTUUID" > /boot/loader/entries/Arch.conf
 
 
 
