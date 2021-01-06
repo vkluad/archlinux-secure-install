@@ -127,11 +127,11 @@ read STOP;
     echo +$BOOT_SIZE;
     echo ef00;
 
-    echo n;
-    echo;
-    echo;
-    echo +$SWAP_SIZE;
-    echo 8200;
+    # echo n;
+    # echo;
+    # echo;
+    # echo +$SWAP_SIZE;
+    # echo 8200;
 
     echo n;
     echo;
