@@ -175,7 +175,7 @@ reflector --verbose --country 'Ukraine' --sort rate --save /etc/pacman.d/mirrorl
 sleep 2;
 
 echo "Install base package"
-pacstrap /mnt base base-devel linux linux-firmware nano netctl dhcpcd intel-ucode zsh reflector f2fs-tools sudo
+pacstrap /mnt base base-devel linux linux-firmware nano netctl dhcpcd intel-ucode zsh reflector f2fs-tools
 sleep 2;
 
 echo "Copying mirrorlist"
