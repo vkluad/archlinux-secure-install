@@ -49,7 +49,7 @@ initrd\t/initramfs-linux.img
 options\troot=PARTUUID=$PARTUUID" > /boot/loader/entries/Arch.conf
 
 
-pacman -Suy dialog wpa_supplicant gnome nvidia nvidia-prime nvidia-settings wget git atom gimp firefox blender cuda
+pacman -Suy dialog wpa_supplicant gnome nvidia nvidia-prime nvidia-settings wget git atom gimp firefox blender cuda libreoffice discord telegram-desktop
 
 
 useradd -m -g users -G wheel -s /bin/zsh temp
