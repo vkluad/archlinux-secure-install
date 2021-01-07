@@ -49,7 +49,8 @@ initrd\t/initramfs-linux.img
 options\troot=PARTUUID=$PARTUUID" > /boot/loader/entries/Arch.conf
 
 
-pacman -Suy dialog wpa_supplicant gnome nvidia nvidia-prime nvidia-settings wget git atom gimp firefox blender cuda libreoffice discord telegram-desktop vulkan-devel
+pacman -Suy dialog wpa_supplicant gnome nvidia nvidia-prime nvidia-settings wget git atom gimp firefox blender
+pacman -Suy cuda libreoffice discord telegram-desktop vulkan-devel nvidia-cg-toolkit lib32-nvidia-cg-toolkit
 
 
 useradd -m -g users -G wheel -s /bin/zsh temp
@@ -63,3 +64,7 @@ sleep 2;
 makepkg -si
 yay -Sy optimus-manager gdm-prime libgdm-prime eclipse-cpp zoom teams skypeforlinux-stable-bin youtube-music-appimage
 systemctl enable gdm-prime
+cd /tmp
+
+wget https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/optimus-manager.conf
+cp optimus-manager.conf /etc/optimus-manager/optimus-manager.conf
