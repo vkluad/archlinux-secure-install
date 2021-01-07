@@ -18,99 +18,40 @@ sleep 2
 
 fdisk -l | grep "Disk /"
 START_SEC=40
-NAME_D=""
+NAME_SSD="nvme0n1"
+NAME_HDD="sda"
+BOOT_SIZE="300M"
+SWAP_SIZE="8G"
+ROOT_SIZE="75G"
+HOME_SIZE="30G"
+GAME_SIZE="350G"
+DATA_SIZE=""
 
 
-while [[ $I != 1 ]]; do
-  echo "Enter the disk name "
-  read NAME_D
-  for NAME_D_T in "sda" "vda" "nvme0n1"
-  do
-    if [[ $NAME_D = $NAME_D_T ]]; then
-      if [[ "$(fdisk -l | grep "$NAME_D")" ]]; then
-        I=1
-      else
-        echo
-        echo "Please enter Disk in "
-        echo
-        fdisk -l | grep "Disk /"
-      fi
-
-    fi
-  done
-done
 
 echo "#####################################################"
-echo "Will be created partition on /dev/$NAME_D"
+echo "Will be created root partition on /dev/$NAME_SSD"
+echo
+echo "Will be created data patition on /dev/$NAME_HDD"
 echo
 echo "Start sector for gpt ssd is 40"
 echo
 echo "#####################################################"
-echo "If your wanna change start sector please enter y/N "
-read CH_SEC;
-if [ "$CH_SEC" = "y" ]
-then
-  echo "Please enter the start setion (34(for gpt 512b), 40 for gpt 4K) default 40:"
-  read START_SEC_T
-  if [ $START_SEC_T > 33 ]
-  then
-    START_SEC=$START_SEC_T
-  else
-    echo "40 is default start sector now"
-  fi
-fi
 
-
-
-read STOP;
-BOOT_SIZE="300M"
-SWAP_SIZE="3G"
-ROOT_SIZE="75G"
-HOME_SIZE="30G"
-
+echo "#####################################################"
 echo "/boot (esp) $BOOT_SIZE"
-echo "swap $SWAP_SIZE"
+echo "swap $SWAP_SIZE on HDD"
 echo "/ $ROOT_SIZE(f2fs)"
-echo "/home all other + $HOME_SIZE(f2fs)"
-echo
+echo "/home all other - $HOME_SIZE(f2fs)"
+echo "/data/Games/ $GAME_SIZE (XFS)"
+echo "/data/data/ other size(XFS)"
+echo "#####################################################"
 
-echo "If your wanna change please enter y/N"
-read CH_DISK;
-if [[ "$CH_DISK" = "y" ]]
-then
-  echo "Please enter size of /boot partition(recommented minimum size 300M)"
-  read BOOT_SIZE_T
-  if [ "$BOOT_SIZE_T" > "100M" ]
-  then
-    BOOT_SIZE=$BOOT_SIZE_T
-  else
-    echo "System selected default value($BOOT_SIZE)"
-  fi
+sleep 2;
 
-  echo "Please enter size of swap partiotion(recommented minimum size 512M)"
-  read SWAP_SIZE_T
-  if [ "$SWAP_SIZE_T" > "512M" ]
-  then
-    SWAP_SIZE=$SWAP_SIZE_T
-  else
-    echo "System selected default value($SWAP_SIZE)"
-  fi
 
-  echo "Please enter size of root partiotion(recommented minimum size 25G)"
-  read ROOT_SIZE_T
-  if [ "$ROOT_SIZE_T" > "25G" ]
-  then
-    ROOT_SIZE=$ROOT_SIZE_T
-  else
-    echo "System selected default value($ROOT_SIZE)"
-  fi
-
-  echo "Home partition will be created of all free size -$HOME_SIZE"
-
-fi
-
-echo "Press enter to continue"
-read STOP;
+echo "Create partiotion on $NAME_SSD"
+sleep 2;
 
 (
     echo o;
@@ -127,47 +68,76 @@ read STOP;
     echo +$BOOT_SIZE;
     echo ef00;
 
-    # echo n;
-    # echo;
-    # echo;
-    # echo +$SWAP_SIZE;
-    # echo 8200;
-
     echo n;
     echo;
     echo;
     echo +$ROOT_SIZE;
-
     echo 8304;
+
     echo n;
     echo;
     echo;
     echo -$HOME_SIZE;
     echo 8302;
+
     echo w;
     echo y;
-) | gdisk /dev/$NAME_D
+) | gdisk /dev/$NAME_SSD
 
-if [ "$NAME_D" = "nvme0n1" ]
-then
-  P='p'
-else
-  P=''
-fi
+echo "Create Partition on $NAME_HDD"
+(
+    echo o;
+    echo y;
+
+    echo x;
+    echo l;
+    echo $START_SEC;
+    echo m;
+
+    echo n;
+    echo;
+    echo;
+    echo +$SWAP_SIZE;
+    echo 8200;
+
+    echo n;
+    echo;
+    echo;
+    echo +$GAME_SIZE;
+    echo 8300;
+
+    echo n;
+    echo;
+    echo;
+    echo;
+    echo 8300;
+
+    echo w;
+    echo y;
+) | gdisk /dev/$NAME_HDD
+
+
 
 echo "Format disk and mount on /mnt"
-mkfs.vfat -S 4096 /dev/$NAME_D$P\1
-mkswap /dev/$NAME_D$P\2
-swapon /dev/$NAME_D$P\2
-mkfs.f2fs /dev/$NAME_D$P\3
-mkfs.f2fs /dev/$NAME_D$P\4
-mount /dev/$NAME_D$P\3 /mnt
+mkfs.vfat -S 4096 /dev/$NAME_SSD$P\1
+mkswap /dev/$NAME_HDD\1
+swapon /dev/$NAME_HDD\1
+mkfs.f2fs /dev/$NAME_SSD\p2
+mkfs.f2fs /dev/$NAME_SSD\p3
+mkfs.xfs -f -L "GAMES" -b 4096 /dev/$NAME_HDD\2
+mkfs.xfs -f -L "DATA" -b 4096 /dev/$NAME_HDD\3
+
+mount /dev/$NAME_SSD\p2 /mnt
 mkdir /mnt/home
 mkdir /mnt/boot
-mount /dev/$NAME_D$P\1 /mnt/boot
-mount /dev/$NAME_D$P\4 /mnt/home
-echo "please enter to continue"
-read STOP;
+mkdir /mnt/data/data
+mkdir /mnt/data/Games
+
+mount /dev/$NAME_SSD\p1 /mnt/boot
+mount /dev/$NAME_SSD\p3 /mnt/home
+mount /dev/$NAME_HDD\2 /mnt/data/Games
+mount /dev/$NAME_HDD\3 /mnt/data/data
+
 sleep 3;
 
 echo "Refresh mirror list"
@@ -185,4 +155,4 @@ sleep 2;
 echo "Setting system"
 genfstab -U /mnt >> /mnt/etc/fstab
 echo "Chroot enter"
-arch-chroot /mnt bash -c "$(curl -fsSL https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/install_and_setting_arch_out_base.sh)" $NAME_D $P
+arch-chroot /mnt bash -c "$(curl -fsSL https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/install_and_setting_arch_out_base.sh)" $NAME_SSD $P
