@@ -33,8 +33,8 @@ ff02::2    ip6-allrouters" >> /etc/hosts
 
 echo 'Recommented library for 32-bit apps'
 # sed -i 's/.*#\[multilib\]\n#Include = /etc/pacman.d/mirrorlist.*/\[multilib\]\nInclude = /etc/pacman.d/mirrorlist/' /etc/pacman.conf
-echo '[multilib]' >> /etc/pacman.conf
-echo 'Include = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf
+# echo '[multilib]' >> /etc/pacman.conf
+# echo 'Include = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf
 pacman -Syy
 echo "Install bootloader"
 bootctl --path=/boot install
@@ -50,3 +50,12 @@ options\troot=PARTUUID=$PARTUUID" > /boot/loader/entries/Arch.conf
 
 
 pacman -Suy dialog wpa_supplicant gnome nvidia nvidia-prime gdm-prime nvidia-settings wget git
+
+
+useradd -m -g users -G wheel -s /bin/zsh temp
+echo "1111" | passwd temp
+su temp
+cd /tmp
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
