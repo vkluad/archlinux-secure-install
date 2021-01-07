@@ -52,7 +52,7 @@ options\troot=PARTUUID=$PARTUUID" > /boot/loader/entries/Arch.conf
 pacman -Suy dialog wpa_supplicant gnome nvidia nvidia-prime nvidia-settings wget git atom gimp firefox blender
 pacman -S cuda libreoffice discord telegram-desktop vulkan-devel nvidia-cg-toolkit lib32-nvidia-cg-toolkit chromium
 pacman -S tor ghex handbrake htop jdk11-openjdk jre-openjdk jre-openjdk-headless jre11-openjdk jre11-openjdk-headless
-pacman -S shotcut efibootmgr embree exfat-utils expac gstreamer-vaapi iotop qemu screen neofetch boxes zerotier-one
+pacman -S shotcut efibootmgr embree exfat-utils gstreamer-vaapi iotop qemu screen neofetch boxes zerotier-one
 pacman -S zsh-syntax-highlighting
 
 useradd -m -g users -G wheel -s /bin/zsh temp
