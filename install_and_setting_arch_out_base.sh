@@ -16,6 +16,7 @@ echo "Password for root user"
 passwd
 
 echo 'Added locale in locale.gen'
+sleep 1;
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 echo "uk_UA.UTF-8 UTF-8" >> /etc/locale.gen
 
@@ -41,12 +42,12 @@ bootctl --path=/boot install
 
 echo "default Arch" > /boot/loader/loader.conf
 
-PARTUUID="$(blkid /dev/$0\$1\2 | sed -n '/.*PARTUUID="/s///;s/"//p')"
+PARTUUID="$(blkid /dev/$0\2 | sed -n '/.*PARTUUID="/s///;s/"//p')"
 echo "title\tArch Linux
 linux\t/vmlinuz-linux
 initrd\t/intel-ucode.img
 initrd\t/initramfs-linux.img
-options\troot=PARTUUID=$PARTUUID" > /boot/loader/entries/Arch.conf
+options\troot=PARTUUID=$PARTUUID rw" > /boot/loader/entries/Arch.conf
 
 
 pacman -Suy dialog wpa_supplicant gnome nvidia nvidia-prime nvidia-settings wget git atom gimp firefox blender

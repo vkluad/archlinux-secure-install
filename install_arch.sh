@@ -155,4 +155,4 @@ sleep 2;
 echo "Setting system"
 genfstab -U /mnt >> /mnt/etc/fstab
 echo "Chroot enter"
-arch-chroot /mnt bash -c "$(curl -fsSL https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/install_and_setting_arch_out_base.sh)" $NAME_SSD $P
+arch-chroot /mnt bash -c "$(curl -fsSL https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/install_and_setting_arch_out_base.sh)" $NAME_SSD
