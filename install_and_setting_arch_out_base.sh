@@ -70,5 +70,6 @@ cd /tmp
 
 wget https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/optimus-manager.conf
 cp optimus-manager.conf /etc/optimus-manager/optimus-manager.conf
+exit
 userdel -r temp
 exit
