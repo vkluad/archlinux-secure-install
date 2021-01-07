@@ -50,7 +50,8 @@ options\troot=PARTUUID=$PARTUUID" > /boot/loader/entries/Arch.conf
 
 
 pacman -Suy dialog wpa_supplicant gnome nvidia nvidia-prime nvidia-settings wget git atom gimp firefox blender
-pacman -Suy cuda libreoffice discord telegram-desktop vulkan-devel nvidia-cg-toolkit lib32-nvidia-cg-toolkit
+pacman -S cuda libreoffice discord telegram-desktop vulkan-devel nvidia-cg-toolkit lib32-nvidia-cg-toolkit chromium
+pacman -S tor ghex handbrake htop jdk11-openjdk jre-openjdk jre-openjdk-headless jre11-openjdk jre11-openjdk-headless
 
 
 useradd -m -g users -G wheel -s /bin/zsh temp
