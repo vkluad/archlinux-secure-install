@@ -24,7 +24,6 @@ BOOT_SIZE="300M"
 SWAP_SIZE="8G"
 ROOT_SIZE="75G"
 HOME_SIZE="30G"
-GAME_SIZE="350G"
 DATA_SIZE=""
 
 
@@ -43,8 +42,8 @@ echo "/boot (esp) $BOOT_SIZE"
 echo "swap $SWAP_SIZE on HDD"
 echo "/ $ROOT_SIZE(f2fs)"
 echo "/home all other - $HOME_SIZE(f2fs)"
-echo "/data/Games/ $GAME_SIZE (XFS)"
-echo "/data/data/ other size(XFS)"
+# echo "/data/Games/ $GAME_SIZE (XFS)"
+echo "/data/ all size(XFS)"
 echo "#####################################################"
 
 sleep 2;
@@ -130,13 +129,13 @@ mkfs.xfs -f -L "DATA" -b 4096 /dev/$NAME_HDD\2
 mount /dev/$NAME_SSD\p2 /mnt
 mkdir /mnt/home
 mkdir /mnt/boot
-mkdir /mnt/data/data
-mkdir /mnt/data/Games
+mkdir /mnt/data
+# mkdir /mnt/data/Games
 
 mount /dev/$NAME_SSD\p1 /mnt/boot
 mount /dev/$NAME_SSD\p3 /mnt/home
 # mount /dev/$NAME_HDD\2 /mnt/data/Games
-mount /dev/$NAME_HDD\2 /mnt/data/data
+mount /dev/$NAME_HDD\2 /mnt/data
 
 sleep 3;
 
