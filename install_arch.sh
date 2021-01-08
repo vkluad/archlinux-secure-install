@@ -100,11 +100,11 @@ echo "Create Partition on $NAME_HDD"
     echo +$SWAP_SIZE;
     echo 8200;
 
-    echo n;
-    echo;
-    echo;
-    echo +$GAME_SIZE;
-    echo 8300;
+    # echo n;
+    # echo;
+    # echo;
+    # echo +$GAME_SIZE;
+    # echo 8300;
 
     echo n;
     echo;
@@ -124,8 +124,8 @@ mkswap /dev/$NAME_HDD\1
 swapon /dev/$NAME_HDD\1
 mkfs.f2fs /dev/$NAME_SSD\p2
 mkfs.f2fs /dev/$NAME_SSD\p3
-mkfs.xfs -f -L "GAMES" -b 4096 /dev/$NAME_HDD\2
-mkfs.xfs -f -L "DATA" -b 4096 /dev/$NAME_HDD\3
+# mkfs.xfs -f -L "GAMES" -b 4096 /dev/$NAME_HDD\2
+mkfs.xfs -f -L "DATA" -b 4096 /dev/$NAME_HDD\2
 
 mount /dev/$NAME_SSD\p2 /mnt
 mkdir /mnt/home
@@ -135,8 +135,8 @@ mkdir /mnt/data/Games
 
 mount /dev/$NAME_SSD\p1 /mnt/boot
 mount /dev/$NAME_SSD\p3 /mnt/home
-mount /dev/$NAME_HDD\2 /mnt/data/Games
-mount /dev/$NAME_HDD\3 /mnt/data/data
+# mount /dev/$NAME_HDD\2 /mnt/data/Games
+mount /dev/$NAME_HDD\2 /mnt/data/data
 
 sleep 3;
 
