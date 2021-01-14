@@ -68,30 +68,58 @@ sleep 2;
     echo;
     echo;
     echo -$HOME_SIZE;
-    echo 8302;
+    echo 8300;
 
     echo w;
     echo y;
 ) | gdisk /dev/$NAME_SSD
 
-
-
+# echo "Create HDD partition and reserv copy system?(y/N)"
+# read chsy;
+# if [ $chsy = 'y' ]
+# then
+# (
+#     echo o;
+#     echo y;
+#
+#     echo x;
+#     echo l;
+#     echo $START_SEC;
+#     echo m;
+#
+#     echo n;
+#     echo;
+#     echo;
+#     echo +$BOOT_SIZE;
+#     echo ef00;
+#
+#     echo n;
+#     echo;
+#     echo;
+#     echo;
+#     echo 8300;
+#
+#     echo w;
+#     echo y;
+# ) | gdisk /dev/$NAME_HDD
+#
 
 
 echo "Format disk and mount on /mnt"
 mkfs.vfat -S 4096 /dev/$NAME_SSD$P\1
-mkswap /dev/$NAME_HDD\1
-swapon /dev/$NAME_HDD\1
-mkfs.f2fs /dev/$NAME_SSD\p2
-mkfs.f2fs /dev/$NAME_SSD\p3
-# mkfs.xfs -f -L "GAMES" -b 4096 /dev/$NAME_HDD\2
-mkfs.xfs -f -L "DATA" -b 4096 /dev/$NAME_HDD\2
 
+mkfs.btrfs /dev/$NAME_SSD\p2
 mount /dev/$NAME_SSD\p2 /mnt
-mkdir /mnt/home
-mkdir /mnt/boot
-mkdir /mnt/data
-# mkdir /mnt/data/Games
+btrfs subvolume create /mnt/@root
+btrfs subvolume create /mnt/@home
+btrfs subvolume create /mnt/@.snapshots
+umount /dev/$NAME_SSD\p2
+mount -o noatime,compress=lzo,space_cache,subvol=@root /dev/$NAME_SSD /mnt/
+mkdir /mnt/{boot,home,.snapshots,data}
+mount -o noatime,compress=lzo,space_cache,subvol=@home /dev/$NAME_SSD /mnt/home
+mount -o noatime,compress=lzo,space_cache,subvol=@.snapshots /dev/$NAME_SSD /mnt/.snapshots
+
+
 
 mount /dev/$NAME_SSD\p1 /mnt/boot
 mount /dev/$NAME_SSD\p3 /mnt/home
