@@ -142,7 +142,7 @@ echo "Setting system"
 genfstab -U /mnt >> /mnt/etc/fstab
 cp /etc/zsh/* /mnt/etc/zsh/
 echo "Chroot enter"
-wget -O /mnt/root/install_and_setting_arch_out_base.sh https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/install_and_setting_arch_out_base.sh
-echo "Please run 'bash /root/install_and_setting_arch_out_base.sh'"
+cp -r /root/Arch_linux_install /mnt/root/
+echo "Please run 'bash /root/Arch_linux_install/install_and_settings_programs.sh'"
 acrh-chroot /mnt
-# arch-chroot /mnt bash -c "$(curl -fsSL https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/install_and_setting_arch_out_base.sh)" $NAME_SSD
+# arch-chroot /mnt bash -c "$(curl -fsSL https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/install_and_settings_programs.sh)" $NAME_SSD

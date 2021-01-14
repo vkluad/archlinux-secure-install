@@ -4,7 +4,7 @@ cd /tmp
 git clone https://aur.archlinux.org/yay.git
 cd yay
 echo "password for temp user is : 1111"
-sleep 3;
+sleep 2;
 makepkg -si
 yay -S wd719x-firmware upd72020x-fw aic94xx-firmware
 yay -S optimus-manager gdm-prime libgdm-prime eclipse-cpp zoom teams skypeforlinux-stable-bin youtube-music-appimage

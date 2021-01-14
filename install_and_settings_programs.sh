@@ -1,4 +1,5 @@
 #!/bin/bash
+NAME_SSD="nvme0n1"
 ln -svf /usr/share/zoneinfo/Europe/Kiev /etc/localtime
 
 read -p "Ether the host name: " HOSTNAME
@@ -23,7 +24,7 @@ echo "uk_UA.UTF-8 UTF-8" >> /etc/locale.gen
 echo 'Update locale in system now'
 locale-gen
 
-echo 'LANG="en_US.UTF-8"' > /etc/locale.conf
+echo 'LANG=en_US.UTF-8' > /etc/locale.conf
 
 echo
 echo "127.0.0.1  localhost
@@ -43,17 +44,17 @@ bootctl --path=/boot install
 echo "default Arch
 timeout 1" > /boot/loader/loader.conf
 
-PARTUUID="$(blkid /dev/$0\2 | sed -n '/.*PARTUUID="/s///;s/"//p')"
+PARTUUID="$(blkid /dev/$NAME_SSD\p2 | sed -n '/.*PARTUUID="/s///;s/"//p')"
 echo "title\tArch Linux
 linux\t/vmlinuz-linux
 initrd\t/intel-ucode.img
 initrd\t/initramfs-linux.img
-options\troot=PARTUUID=$PARTUUID rw" > /boot/loader/entries/Arch.conf
-
+options\troot=PARTUUID=$PARTUUID rw rootflags=subvol=@root" > /boot/loader/entries/Arch.conf
 
 pacman -Suy dialog wpa_supplicant gnome nvidia nvidia-prime nvidia-settings wget git atom gimp firefox blender cuda libreoffice-still discord telegram-desktop vulkan-devel nvidia-cg-toolkit lib32-nvidia-cg-toolkit chromium tor ghex handbrake htop jdk11-openjdk jre-openjdk jre-openjdk-headless jre11-openjdk jre11-openjdk-headless shotcut efibootmgr embree exfat-utils gstreamer-vaapi iotop screen neofetch zerotier-one ncdu ntfs-3g
 
-
 useradd -m -g users -G wheel -s /bin/zsh temp
 echo "1111" | passwd temp
+echo "Please run 'bash aur_install.sh'"
+cd 
 su temp
