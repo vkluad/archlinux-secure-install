@@ -23,7 +23,7 @@ NAME_SSD="nvme0n1"
 BOOT_SIZE="300M"
 # SWAP_SIZE="8G"
 # ROOT_SIZE="75G"
-# HOME_SIZE="30G"
+HOME_SIZE="30G"
 # DATA_SIZE=""
 
 
@@ -67,12 +67,6 @@ sleep 2;
     echo n;
     echo;
     echo;
-    echo +$ROOT_SIZE;
-    echo 8304;
-
-    echo n;
-    echo;
-    echo;
     echo -$HOME_SIZE;
     echo 8302;
 
@@ -80,37 +74,7 @@ sleep 2;
     echo y;
 ) | gdisk /dev/$NAME_SSD
 
-echo "Create Partition on $NAME_HDD"
-(
-    echo o;
-    echo y;
 
-    echo x;
-    echo l;
-    echo $START_SEC;
-    echo m;
-
-    echo n;
-    echo;
-    echo;
-    echo +$SWAP_SIZE;
-    echo 8200;
-
-    # echo n;
-    # echo;
-    # echo;
-    # echo +$GAME_SIZE;
-    # echo 8300;
-
-    echo n;
-    echo;
-    echo;
-    echo;
-    echo 8300;
-
-    echo w;
-    echo y;
-) | gdisk /dev/$NAME_HDD
 
 
 
