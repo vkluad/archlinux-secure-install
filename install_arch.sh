@@ -131,7 +131,7 @@ reflector --verbose --country 'Ukraine' --sort rate --save /etc/pacman.d/mirrorl
 sleep 2;
 
 echo "Install base package"
-pacstrap /mnt base base-devel linux linux-firmware nano netctl dhcpcd intel-ucode zsh reflector f2fs-tools xfsprogs
+pacstrap /mnt base base-devel linux linux-firmware nano netctl dhcpcd intel-ucode zsh reflector btrfs-progs go networkmanager
 sleep 2;
 
 echo "Copying mirrorlist"
@@ -141,4 +141,7 @@ sleep 2;
 echo "Setting system"
 genfstab -U /mnt >> /mnt/etc/fstab
 echo "Chroot enter"
-arch-chroot /mnt bash -c "$(curl -fsSL https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/install_and_setting_arch_out_base.sh)" $NAME_SSD
+wget -O /mnt/root/install_and_setting_arch_out_base.sh https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/install_and_setting_arch_out_base.sh
+echo "Please run ./mnt/root/install_and_setting_arch_out_base.sh"
+acrh-chroot /mnt
+# arch-chroot /mnt bash -c "$(curl -fsSL https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/install_and_setting_arch_out_base.sh)" $NAME_SSD
