@@ -52,7 +52,7 @@ initrd\t/intel-ucode.img
 initrd\t/initramfs-linux.img
 options\troot=PARTUUID=$PARTUUID rw rootflags=subvol=@root" > /boot/loader/entries/Arch.conf
 
-pacman -Suy dialog wpa_supplicant gnome nvidia nvidia-prime nvidia-settings wget git atom gimp firefox blender cuda libreoffice-still discord telegram-desktop vulkan-devel nvidia-cg-toolkit lib32-nvidia-cg-toolkit chromium tor ghex handbrake htop jdk11-openjdk jre-openjdk jre-openjdk-headless jre11-openjdk jre11-openjdk-headless shotcut efibootmgr embree exfat-utils gstreamer-vaapi iotop screen neofetch zerotier-one ncdu ntfs-3g
+pacman -Suy dialog wpa_supplicant gnome nvidia nvidia-prime nvidia-settings wget git atom gimp firefox blender cuda libreoffice-still discord telegram-desktop vulkan-devel nvidia-cg-toolkit lib32-nvidia-cg-toolkit chromium tor ghex handbrake htop jdk11-openjdk jre-openjdk jre-openjdk-headless jre11-openjdk jre11-openjdk-headless shotcut efibootmgr embree exfat-utils gstreamer-vaapi iotop screen neofetch zerotier-one ncdu ntfs-3g rsync
 
 useradd -m -g users -G wheel -s /bin/zsh temp
 echo "1111" | passwd temp
