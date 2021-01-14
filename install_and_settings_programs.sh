@@ -1,6 +1,7 @@
 #!/bin/bash
 NAME_SSD="nvme0n1"
 ln -svf /usr/share/zoneinfo/Europe/Kiev /etc/localtime
+chsh -s /bin/zsh
 
 read -p "Ether the host name: " HOSTNAME
 read -p "Enter user name: " USERNAME
@@ -56,5 +57,5 @@ pacman -Suy dialog wpa_supplicant gnome nvidia nvidia-prime nvidia-settings wget
 useradd -m -g users -G wheel -s /bin/zsh temp
 echo "1111" | passwd temp
 echo "Please run 'bash aur_install.sh'"
-cd 
+cd
 su temp
