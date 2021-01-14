@@ -114,17 +114,15 @@ btrfs subvolume create /mnt/@root
 btrfs subvolume create /mnt/@home
 btrfs subvolume create /mnt/@.snapshots
 umount /dev/$NAME_SSD\p2
-mount -o noatime,compress=lzo,space_cache,subvol=@root /dev/$NAME_SSD /mnt/
+mount -o noatime,compress=lzo,space_cache,subvol=@root /dev/$NAME_SSD\p2 /mnt/
 mkdir /mnt/{boot,home,.snapshots,data}
-mount -o noatime,compress=lzo,space_cache,subvol=@home /dev/$NAME_SSD /mnt/home
-mount -o noatime,compress=lzo,space_cache,subvol=@.snapshots /dev/$NAME_SSD /mnt/.snapshots
-
-
-
+mkdir /mnt/data/{Data,SecureData,MassiveData}
 mount /dev/$NAME_SSD\p1 /mnt/boot
-mount /dev/$NAME_SSD\p3 /mnt/home
-# mount /dev/$NAME_HDD\2 /mnt/data/Games
-mount /dev/$NAME_HDD\2 /mnt/data
+mount -o noatime,compress=lzo,space_cache,subvol=@home /dev/$NAME_SSD\p2 /mnt/home
+mount -o noatime,compress=lzo,space_cache,subvol=@.snapshots /dev/$NAME_SSD\p2 /mnt/.snapshots
+mount -o noatime,noadatacow,compress=lzo,space_cache,subvol=@data /dev/$NAME_HDD\2 /mnt/data/Data
+mount -o noatime,noadatacow,compress=lzo,space_cache,subvol=@secure_data /dev/$NAME_HDD\2 /mnt/data/SecureData
+mount -o noatime,noadatacow,compress=lzo,space_cache,subvol=@massive_data /dev/$NAME_HDD\2 /mnt/data/MassiveData
 
 sleep 3;
 
