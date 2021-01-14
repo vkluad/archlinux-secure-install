@@ -19,12 +19,12 @@ sleep 2
 fdisk -l | grep "Disk /"
 START_SEC=40
 NAME_SSD="nvme0n1"
-NAME_HDD="sda"
+# NAME_HDD="sda"
 BOOT_SIZE="300M"
-SWAP_SIZE="8G"
-ROOT_SIZE="75G"
-HOME_SIZE="30G"
-DATA_SIZE=""
+# SWAP_SIZE="8G"
+# ROOT_SIZE="75G"
+# HOME_SIZE="30G"
+# DATA_SIZE=""
 
 
 
@@ -39,11 +39,8 @@ echo "#####################################################"
 
 echo "#####################################################"
 echo "/boot (esp) $BOOT_SIZE"
-echo "swap $SWAP_SIZE on HDD"
-echo "/ $ROOT_SIZE(f2fs)"
-echo "/home all other - $HOME_SIZE(f2fs)"
-# echo "/data/Games/ $GAME_SIZE (XFS)"
-echo "/data/ all size(XFS)"
+# echo "swap $SWAP_SIZE on HDD"
+echo "/ btrfs subvolume created (@root,@home,@.snapshots)"
 echo "#####################################################"
 
 sleep 2;
