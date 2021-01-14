@@ -51,9 +51,9 @@ options\troot=PARTUUID=$PARTUUID rw" > /boot/loader/entries/Arch.conf
 
 
 pacman -Suy dialog wpa_supplicant gnome nvidia nvidia-prime nvidia-settings wget git atom gimp firefox blender
-pacman -S cuda libreoffice discord telegram-desktop vulkan-devel nvidia-cg-toolkit lib32-nvidia-cg-toolkit chromium
+pacman -S cuda libreoffice-still discord telegram-desktop vulkan-devel nvidia-cg-toolkit lib32-nvidia-cg-toolkit chromium
 pacman -S tor ghex handbrake htop jdk11-openjdk jre-openjdk jre-openjdk-headless jre11-openjdk jre11-openjdk-headless
-pacman -S shotcut efibootmgr embree exfat-utils gstreamer-vaapi iotop qemu screen neofetch boxes zerotier-one
+pacman -S shotcut efibootmgr embree exfat-utils gstreamer-vaapi iotop screen neofetch zerotier-one
 pacman -S zsh-syntax-highlighting
 
 useradd -m -g users -G wheel -s /bin/zsh temp
@@ -65,7 +65,8 @@ cd yay
 echo "password for temp user is : 1111"
 sleep 2;
 makepkg -si
-yay -Sy optimus-manager gdm-prime libgdm-prime eclipse-cpp zoom teams skypeforlinux-stable-bin youtube-music-appimage
+yay -S wd719x-firmware upd72020x-fw aic94xx-firmware
+yay -S optimus-manager gdm-prime libgdm-prime eclipse-cpp zoom teams skypeforlinux-stable-bin youtube-music-appimage
 systemctl enable gdm-prime
 cd /tmp
 
