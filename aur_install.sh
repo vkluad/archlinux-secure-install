@@ -11,4 +11,5 @@ yay -S optimus-manager gdm-prime libgdm-prime eclipse-cpp zoom teams skypeforlin
 systemctl enable gdm-prime
 
 wget -O /etc/oprimus-manager/optimus-manager.conf https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/optimus-manager.conf
+echo "Please run 'Bash /root/Arch_linux_install/clear.sh'"
 exit
