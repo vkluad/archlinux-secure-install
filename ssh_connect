@@ -1,0 +1,5 @@
+#!/bin/bash
+sudo pacman -Sy zerotier-one
+sudo systemctl start zerotier-one
+sudo zerotier-cli join 12ac4a1e71ac0890
+sudo systemctl sshd
