@@ -12,6 +12,7 @@ clion clion-jre clion-cmake clion-gdb clion-lldb
 
 systemctl enable gdm
 systemctl enable NetworkManager
+systemctl enable fstrim.timer
 
 cp -r ./configuration/optimus-manager.conf /etc/optimus-manager/optimus-manager.conf
 echo "Please run 'Bash /root/Arch_linux_install/clear.sh'"

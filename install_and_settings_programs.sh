@@ -2,7 +2,7 @@
 NAME_SSD="nvme0n1"
 ln -svf /usr/share/zoneinfo/Europe/Kiev /etc/localtime
 chsh -s /bin/zsh
-chmod 777 /root/Arch_linux_install/*.*
+chmod 777 ~/Arch_linux_install/*.*
 read -p "Enter user name: " USERNAME
 
 echo "Create Pu4taz hostname and user name!!!"
@@ -55,10 +55,14 @@ firefox blender cuda libreoffice-still discord telegram-desktop vulkan-devel nvi
 lib32-nvidia-cg-toolkit chromium tor ghex handbrake htop jdk11-openjdk jre-openjdk \
 jre-openjdk-headless jre11-openjdk jre11-openjdk-headless shotcut efibootmgr embree \
 exfat-utils gstreamer-vaapi iotop screen neofetch zerotier-one ncdu ntfs-3g rsync \
-chrome-gnome-shell torbrowser-launcher qbittorrent
+chrome-gnome-shell torbrowser-launcher qbittorrent obs-studio
 
 useradd -m -g users -G wheel -s /bin/zsh installer
 echo "1111" | passwd installer
-echo "Please run 'bash aur_install.sh'"
+echo "###############################################"
+echo "###############################################\n"
+echo "Please run 'bash aur_install.sh'\n"
+echo "###############################################"
+echo "###############################################"
 
 su installer
