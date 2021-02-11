@@ -101,22 +101,27 @@ sleep 2;
 
 
 echo "Format disk and mount on /mnt"
+
 mkfs.vfat -S 4096 /dev/nvme0n1p1
 
+################################################################################
 mkfs.btrfs /dev/nvme0n1p2
 mount /dev/nvme0n1p2 /mnt
 btrfs subvolume create /mnt/@
 btrfs subvolume create /mnt/@home
 btrfs subvolume create /mnt/@.snapshots
 umount /dev/nvme0n1p2
-mount -o noatime,compress=lzo,space_cache,subvol=@root /dev/nvme0n1p2 /mnt/
+################################################################################
+
+mount -o noatime,compress=lzo,space_cache,subvol=@ /dev/nvme0n1p2 /mnt/
 mkdir /mnt/{boot,home,.snapshots,data}
 mkdir /mnt/data/{Data,MassiveData}
 mount /dev/nvme0n1p1 /mnt/boot
 mount -o noatime,compress=lzo,space_cache,subvol=@home /dev/nvme0n1p2 /mnt/home
 mount -o noatime,compress=lzo,space_cache,subvol=@.snapshots /dev/nvme0n1p2 /mnt/.snapshots
+################################################################################
+
 mount -o noatime,nodatacow,compress=lzo,space_cache,subvol=@data /dev/sda2 /mnt/data/Data
-mount -o noatime,nodatacow,compress=lzo,space_cache,subvol=@secure_data /dev/sda2 /mnt/data/SecureData
 mount -o noatime,nodatacow,compress=lzo,space_cache,subvol=@massive_data /dev/sda2 /mnt/data/MassiveData
 
 sleep 3;
@@ -139,5 +144,5 @@ cp /etc/zsh/* /mnt/etc/zsh/
 echo "Chroot enter"
 cp -r /root/Arch_linux_install /mnt/root/
 
-acrh-chroot /mnt bash -c "$(echo "Please run 'bash /root/Arch_linux_install/install_and_settings_programs.sh'")"
+arch-chroot /mnt bash -c "$(echo "Please run 'bash /root/Arch_linux_install/install_and_settings_programs.sh'")"
 # arch-chroot /mnt bash -c "$(curl -fsSL https://raw.githubusercontent.com/vkluad/Arch_linux_install/main/install_and_settings_programs.sh)" $NAME_SSD

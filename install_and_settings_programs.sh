@@ -35,25 +35,27 @@ ff02::1    ip6-allnodes
 ff02::2    ip6-allrouters" >> /etc/hosts
 
 echo 'Recommented library for 32-bit apps'
-wget -O /etc/pacman.conf 
+cp -r ./configuration/pacman.conf /etc/pacman.conf
 pacman -Syy
 echo "Install bootloader"
 bootctl --path=/boot install
 
-echo "default Arch
-timeout 0" > /boot/loader/loader.conf
+echo "default\tArch
+timeout\t0" > /boot/loader/loader.conf
 
 PARTUUID="$(blkid /dev/$NAME_SSD\p2 | sed -n '/.*PARTUUID="/s///;s/"//p')"
 echo "title\tArch Linux
 linux\t/vmlinuz-linux
 initrd\t/intel-ucode.img
 initrd\t/initramfs-linux.img
-options\troot=PARTUUID=$PARTUUID rw rootflags=subvol=@root" > /boot/loader/entries/Arch.conf
+options\troot=PARTUUID=$PARTUUID rw rootflags=subvol=@" > /boot/loader/entries/Arch.conf
 
 pacman -Suy dialog wpa_supplicant gnome nvidia nvidia-prime nvidia-settings wget git atom gimp \
-firefox blender cuda libreoffice-still discord telegram-desktop vulkan-devel nvidia-cg-toolkit lib32-nvidia-cg-toolkit chromium tor ghex handbrake \
-htop jdk11-openjdk jre-openjdk jre-openjdk-headless jre11-openjdk jre11-openjdk-headless shotcut efibootmgr embree exfat-utils gstreamer-vaapi \
-iotop screen neofetch zerotier-one ncdu ntfs-3g rsync
+firefox blender cuda libreoffice-still discord telegram-desktop vulkan-devel nvidia-cg-toolkit \
+lib32-nvidia-cg-toolkit chromium tor ghex handbrake htop jdk11-openjdk jre-openjdk \
+jre-openjdk-headless jre11-openjdk jre11-openjdk-headless shotcut efibootmgr embree \
+exfat-utils gstreamer-vaapi iotop screen neofetch zerotier-one ncdu ntfs-3g rsync \
+chrome-gnome-shell torbrowser-launcher qbittorrent
 
 useradd -m -g users -G wheel -s /bin/zsh installer
 echo "1111" | passwd installer
