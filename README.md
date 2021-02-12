@@ -24,11 +24,9 @@ gpg -K
 
 #### **For generation key you can to used:**
 
-
-<pre><font color="#C01C28"><b>root</b></font>@Pu4taz <b>/home/vlad </b>#
-gpg --full-generate-key</pre> 
-
-
+```sh
+gpg --full-generate-key
+```
 >After entering this command you views this:
 
 ```
