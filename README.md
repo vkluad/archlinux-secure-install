@@ -24,12 +24,15 @@ gpg -K
 
 #### **For generation key you can to used:**
 
-```sh
-gpg --full-generate-key
-```
+
+<pre><font color="#C01C28"><b>root</b></font>@Pu4taz <b>/home/vlad </b>#
+</pre>gpg --full-generate-key
+
+
 >After entering this command you views this:
 
-<pre>gpg (GnuPG) 2.2.27; Copyright (C) 2021 Free Software Foundation, Inc.
+```
+gpg (GnuPG) 2.2.27; Copyright (C) 2021 Free Software Foundation, Inc.
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
 
@@ -39,7 +42,8 @@ Please select what kind of key you want:
    (3) DSA (sign only)
    (4) RSA (sign only)
   (14) Existing key from card
-Your selection?</pre>
+Your selection?
+```
 
 
 ### **For start installation you must download repository and run** programm:
