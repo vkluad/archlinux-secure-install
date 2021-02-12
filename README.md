@@ -26,7 +26,7 @@ gpg -K
 
 
 <pre><font color="#C01C28"><b>root</b></font>@Pu4taz <b>/home/vlad </b>#
-</pre>gpg --full-generate-key
+gpg --full-generate-key</pre> 
 
 
 >After entering this command you views this:
