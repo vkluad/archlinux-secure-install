@@ -22,25 +22,6 @@ BOOT_SIZE="300M"
 HOME_SIZE="10G"
 
 
-
-echo "#####################################################"
-echo "Will be created root partition on /dev/nvme0n1"
-echo
-echo "Will be created data patition on /dev/sda"
-echo
-echo "Start sector for gpt ssd is 40"
-echo
-echo "#####################################################"
-
-echo "#####################################################"
-echo "/boot (esp) $BOOT_SIZE"
-# echo "swap $SWAP_SIZE on HDD"
-echo "/ btrfs subvolume created (@,@home,@.snapshots)"
-echo "#####################################################"
-
-sleep 2;
-
-
 echo "Create partiotion on nvme0n1"
 sleep 2;
 
@@ -207,14 +188,19 @@ pacstrap /$MOUNT_HDD base base-devel linux linux-firmware nano dhcpcd intel-ucod
 sleep 2;
 
 echo "Copying mirrorlist"
-cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
+cp /etc/pacman.d/mirrorlist /$MOUNT_SSD/etc/pacman.d/mirrorlist
+cp /etc/pacman.d/mirrorlist /$MOUNT_HDD/etc/pacman.d/mirrorlist
 sleep 2;
 
 echo "Setting system"
-genfstab -U /mnt >> /mnt/etc/fstab
-cp /etc/zsh/* /mnt/etc/zsh/
+genfstab -U /$MOUNT_SSD >> /$MOUNT_SSD/etc/fstab
+genfstab -U /$MOUNT_HDD >> /$MOUNT_HDD/etc/fstab
+
+cp /etc/zsh/* /$MOUNT_SSD/etc/zsh/
+cp /etc/zsh/* /$MOUNT_HDD/etc/zsh/
 echo "Chroot enter"
-cp -r /root/Arch_linux_install /mnt/root/
+cp -r /root/Arch_linux_install /$MOUNT_SSD/root/
+cp -r /root/Arch_linux_install /$MOUNT_HDD/root/
 
 # arch-chroot /mnt bash -c "$(echo "Please run 'bash /root/Arch_linux_install/install_and_settings_programs.sh'")"
 arch-chroot /mnt bash -c "$(/root/Arch_linux_install/install_and_settings_programs.sh)"
