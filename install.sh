@@ -56,13 +56,13 @@ sleep 2;
     echo n;
     echo;
     echo;
-    echo ; # +$BOOT_SIZE;
+    echo +$BOOT_SIZE;
     echo ef00;
 
     echo n;
     echo;
     echo;
-    echo -$HOME_SIZE;
+    echo; # -$HOME_SIZE;
     echo 8300;
 
     echo w;
@@ -122,18 +122,42 @@ mkfs.ext4 /dev/mmcblk0p1
 mkdir /{mmcblk0,sda,nvme0n1}
 MOUNT_SSD=nvme0n1
 MOUNT_HDD=sda
-dd if=/dev/urandom of=/mmcblk0/4HA6LZWyLGTu6bQv967KEQH5wg7WersN bs=1024 count=2 # create secret key nvme0n1
-dd if=/dev/urandom of=/mmcblk0/rhaTfhJBvhSvgK9E2hSZF4P4u6s8NUsY bs=1024 count=2 # create secret key sda
+mount /dev/mmcblk0p1 /mmcblk0
+dd if=/dev/random of=/mmcblk0/4HA6LZWyLGTu6bQv967KEQH5wg7WersN bs=1024 count=4 # create secret key nvme0n1
+dd if=/dev/random of=/mmcblk0/rhaTfhJBvhSvgK9E2hSZF4P4u6s8NUsY bs=1024 count=4 # create secret key sda
 
 # cryptsetup
+cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --hash whirlpool --iter-time 4082 --key-size 512 --pbkdf argon2id --sector-size 4096 --use-random  /dev/nvme0n1p2 /mmcblk0/4HA6LZWyLGTu6bQv967KEQH5wg7WersN
+cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --hash whirlpool --iter-time 4082 --key-size 512 --pbkdf argon2id --sector-size 4096 --use-random  /dev/sda2 /mmcblk0/rhaTfhJBvhSvgK9E2hSZF4P4u6s8NUsY
+
+cryptsetup luksHeaderBackup /dev/sda2 --header-backup-file /mmcblk0/EvvXtpkDXFTNqd22ePpv7ECtHLmNgBpU        # luksHeaderBackup for sda2
+cryptsetup luksHeaderBackup /dev/nvme0n1p2 --header-backup-file /mmcblk0/rVAd46RpwrNw97kNEnBFj7tsNsx3yMPq   # luksHeaderBackup for nvme0n1
+
+echo YES | cryptsetup luksDump --key-file /mmcblk0/4HA6LZWyLGTu6bQv967KEQH5wg7WersN /dev/nvme0n1p2 --dump-master-key > /mmcblk0/nxbD8Zu4Qk9xFz2Bc66eweQQkZfbRn64 # master-key-file for nvme0n1
+echo YES | cryptsetup luksDump --key-file /mmcblk0/rhaTfhJBvhSvgK9E2hSZF4P4u6s8NUsY /dev/sda2 --dump-master-key > /mmcblk0/c9mrqFA8Lh5mf7xWqTNdk3CHgU7Xecrz # master-key-file for sda
+
+# cryptsetup luksAddKey --key-file key --hash whirlpool --pbkdf argon2id --iter-time 4082 /dev/sda3 # add passphrase or keys
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 mkfs.vfat -S 4096 /dev/nvme0n1p1
 mkfs.vfat -S 4096 /dev/sda1
 
 ################################################################################
-mkfs.btrfs /dev/nvme0n1p2
-mkfs.btrfs /dev/sda1
+mkfs.btrfs -s 4096 /dev/nvme0n1p2
+mkfs.btrfs -s 4096 /dev/sda1
 
 mount /dev/nvme0n1p2 /$MOUNT_SSD
 mount /dev/sda2 /$MOUNT_HDD

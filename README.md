@@ -5,7 +5,7 @@
 ```sh
 iwctl --passphrase=WLAN_PASSWORD station wlan0 connect NAME_WIFI
 ```
-### **Before installation you must have mmcblk0 device for saving key**
+### **Before installation you must have mmcblk0 device for saving recovery key**
 > You can used Yubikey for saving you keys but you must have gpg key.
 
 #### **Download git repository**
