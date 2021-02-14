@@ -18,7 +18,7 @@ sleep 2
 
 fdisk -l | grep "Disk /"
 START_SEC=40
-BOOT_SIZE="300M"
+BOOT_SIZE="200M"
 HOME_SIZE="10G"
 
 
@@ -105,27 +105,34 @@ MOUNT_SSD=nvme_root_crypt
 MOUNT_HDD=sda_root_crypt
 MOUNT_SD=mmcblk
 mkfs.ext4 /dev/mmcblk0p1
-mkdir /{$MOUNT_SD ,$MOUNT_HDD ,$MOUNT_SSD}
+mkdir /{${MOUNT_SD} ,${MOUNT_HDD} ,${MOUNT_SSD}}
 
-mount /dev/mmcblk0p1 /$MOUNT_SD
-dd if=/dev/random of=/$MOUNT_SD/4HA6LZWyLGTu6bQv967KEQH5wg7WersN bs=1024 count=4 # create secret key nvme0n1
-dd if=/dev/random of=/$MOUNT_SD/rhaTfhJBvhSvgK9E2hSZF4P4u6s8NUsY bs=1024 count=4 # create secret key sda
+LUKS_KEY_SSD=4HA6LZWyLGTu6bQv967KEQH5wg7WersN
+LUKS_KEY_HDD=rhaTfhJBvhSvgK9E2hSZF4P4u6s8NUsY
+HEADERBACKUP_SSD=rVAd46RpwrNw97kNEnBFj7tsNsx3yMPq
+HEADERBACKUP_HDD=EvvXtpkDXFTNqd22ePpv7ECtHLmNgBpU
+MASTERKEY_SSD=nxbD8Zu4Qk9xFz2Bc66eweQQkZfbRn64
+MASTERKEY_HDD=c9mrqFA8Lh5mf7xWqTNdk3CHgU7Xecrz
+
+mount /dev/mmcblk0p1 /${MOUNT_SD}
+dd if=/dev/random of=/${MOUNT_SD}/${LUKS_KEY_SSD} bs=1024 count=4 # create secret key nvme0n1 luks-nvme0n1p2.key
+dd if=/dev/random of=/${MOUNT_SD}/${LUKS_KEY_HDD} bs=1024 count=4 # create secret key sda luks-sda2.key
 
 # cryptsetup
-cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --hash whirlpool --iter-time 4058 --key-size 512 --pbkdf argon2id --sector-size 4096 --use-random  /dev/nvme0n1p2 /$MOUNT_SD/4HA6LZWyLGTu6bQv967KEQH5wg7WersN
-cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --hash whirlpool --iter-time 4058 --key-size 512 --pbkdf argon2id --sector-size 4096 --use-random  /dev/sda2 /$MOUNT_SD/rhaTfhJBvhSvgK9E2hSZF4P4u6s8NUsY
+cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --hash whirlpool --iter-time 4058 --key-size 512 --pbkdf argon2id --sector-size 4096 --use-random  /dev/nvme0n1p2 /${MOUNT_SD}/${LUKS_KEY_SSD}
+cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --hash whirlpool --iter-time 4058 --key-size 512 --pbkdf argon2id --sector-size 4096 --use-random  /dev/sda2 /${MOUNT_SD}/${LUKS_KEY_HDD}
 
-cryptsetup luksHeaderBackup /dev/sda2 --header-backup-file /$MOUNT_SD/EvvXtpkDXFTNqd22ePpv7ECtHLmNgBpU        # luksHeaderBackup for sda2 /$MOUNT_SD/HeaderBackup_sda2
-cryptsetup luksHeaderBackup /dev/nvme0n1p2 --header-backup-file /$MOUNT_SD/rVAd46RpwrNw97kNEnBFj7tsNsx3yMPq   # luksHeaderBackup for nvme0n1 /$MOUNT_SD/HeaderBackup_nvme0n1p2
+cryptsetup luksHeaderBackup /dev/sda2 --header-backup-file /${MOUNT_SD}/${HEADERBACKUP_HDD}        # luksHeaderBackup for sda2 /${MOUNT_SD}/HeaderBackup_sda2
+cryptsetup luksHeaderBackup /dev/nvme0n1p2 --header-backup-file /${MOUNT_SD}/${HEADERBACKUP_SSD}   # luksHeaderBackup for nvme0n1 /${MOUNT_SD}/HeaderBackup_nvme0n1p2
 
-echo YES | cryptsetup luksDump --key-file /$MOUNT_SD/4HA6LZWyLGTu6bQv967KEQH5wg7WersN /dev/nvme0n1p2 --dump-master-key > /$MOUNT_SD/nxbD8Zu4Qk9xFz2Bc66eweQQkZfbRn64 # master-key-file for nvme0n1
-echo YES | cryptsetup luksDump --key-file /$MOUNT_SD/rhaTfhJBvhSvgK9E2hSZF4P4u6s8NUsY /dev/sda2 --dump-master-key > /$MOUNT_SD/c9mrqFA8Lh5mf7xWqTNdk3CHgU7Xecrz # master-key-file for sda
+echo YES | cryptsetup luksDump --key-file /${MOUNT_SD}/${LUKS_KEY_SSD} /dev/nvme0n1p2 --dump-master-key > /${MOUNT_SD}/${MASTERKEY_SSD} # master-key-file for nvme0n1
+echo YES | cryptsetup luksDump --key-file /${MOUNT_SD}/${LUKS_KEY_HDD} /dev/sda2 --dump-master-key > /${MOUNT_SD}/${MASTERKEY_HDD} # master-key-file for sda
 
-# cryptsetup luksAddKey --key-file /$MOUNT_SD/rhaTfhJBvhSvgK9E2hSZF4P4u6s8NUsY --hash whirlpool --pbkdf argon2id --iter-time 4058 /dev/sda2 # add passphrase or keys on HDD
-# cryptsetup luksAddKey --key-file /$MOUNT_SD/4HA6LZWyLGTu6bQv967KEQH5wg7WersN --hash whirlpool --pbkdf argon2id --iter-time 4058 /dev/nvme0n1p2 # add passphrase or keys on SSD
+# cryptsetup luksAddKey --key-file /${MOUNT_SD}/${LUKS_KEY_HDD} --hash whirlpool --pbkdf argon2id --iter-time 4058 /dev/sda2 # add passphrase or keys on HDD
+# cryptsetup luksAddKey --key-file /${MOUNT_SD}/${LUKS_KEY_SSD} --hash whirlpool --pbkdf argon2id --iter-time 4058 /dev/nvme0n1p2 # add passphrase or keys on SSD
 
-cryptsetup luksOpen  --key-file /$MOUNT_SD/4HA6LZWyLGTu6bQv967KEQH5wg7WersN /dev/nvme0n1p2 nvme0n1p2_crypt
-cryptsetup luksOpen  --key-file /$MOUNT_SD/rhaTfhJBvhSvgK9E2hSZF4P4u6s8NUsY /dev/sda2 sda2_crypt
+cryptsetup luksOpen  --key-file /${MOUNT_SD}/${LUKS_KEY_SSD} /dev/nvme0n1p2 nvme0n1p2_crypt
+cryptsetup luksOpen  --key-file /${MOUNT_SD}/${LUKS_KEY_HDD} /dev/sda2 sda2_crypt
 
 mkfs.fat -F32 -S 4096 /dev/nvme0n1p1
 mkfs.fat -F32 -S 4096 /dev/sda1
@@ -134,48 +141,50 @@ mkfs.fat -F32 -S 4096 /dev/sda1
 mkfs.btrfs -s 4096 /dev/mapper/nvme0n1p2_crypt
 mkfs.btrfs -s 4096 /dev/mapper/sda2_crypt
 
-mount /dev/mapper/nvme0n1p2_crypt /$MOUNT_SSD
-mount /dev/mapper/sda2_crypt /$MOUNT_HDD
+mount /dev/mapper/nvme0n1p2_crypt /${MOUNT_SSD}
+mount /dev/mapper/sda2_crypt /${MOUNT_HDD}
 
-btrfs subvolume create /$MOUNT_SSD/@
-btrfs subvolume create /$MOUNT_HDD/@
+btrfs subvolume create /${MOUNT_SSD}/@
+btrfs subvolume create /${MOUNT_HDD}/@
 
-btrfs subvolume create /$MOUNT_SSD/@home
-btrfs subvolume create /$MOUNT_HDD/@home
+btrfs subvolume create /${MOUNT_SSD}/@home
+btrfs subvolume create /${MOUNT_HDD}/@home
 
-btrfs subvolume create /$MOUNT_SSD/@.snapshots
-btrfs subvolume create /$MOUNT_HDD/@.snapshots
+btrfs subvolume create /${MOUNT_SSD}/@.snapshots
+btrfs subvolume create /${MOUNT_HDD}/@.snapshots
 
-btrfs subvolume create /$MOUNT_HDD/@data
-btrfs subvolume create /$MOUNT_HDD/@massive_data
+btrfs subvolume create /${MOUNT_HDD}/@data
+btrfs subvolume create /${MOUNT_HDD}/@massive_data
 
 umount /dev/mapper/nvme0n1p2_crypt
 umount /dev/mapper/sda2_crypt
 
 
-mount -o noatime,compress=zstd,space_cache,subvol=@ /dev/mapper/nvme0n1p2_crypt /$MOUNT_SSD/
-mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@ /dev/mapper/sda2_crypt /$MOUNT_HDD/
+mount -o noatime,compress=zstd,space_cache,subvol=@ /dev/mapper/nvme0n1p2_crypt /${MOUNT_SSD}/
+mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@ /dev/mapper/sda2_crypt /${MOUNT_HDD}/
 
-mkdir /$MOUNT_SSD/{boot,home,.snapshots,data}
-mkdir /$MOUNT_HDD/{boot,home,.snapshots,data}
+mkdir /${MOUNT_SSD}/{boot,home,.snapshots,data}
+mkdir /${MOUNT_HDD}/{boot,home,.snapshots,data}
+mkdir /${MOUNT_SSD}/boot/efi
+mkdir /${MOUNT_HDD}/boot/efi
 
-mkdir /$MOUNT_SSD/data/{Data,MassiveData}
-mkdir /$MOUNT_HDD/data/{Data,MassiveData}
+mkdir /${MOUNT_SSD}/data/{Data,MassiveData}
+mkdir /${MOUNT_HDD}/data/{Data,MassiveData}
 
-mount /dev/nvme0n1p1 /$MOUNT_SSD/boot
-mount /dev/sda1 /$MOUNT_HDD/boot
+mount /dev/nvme0n1p1 /${MOUNT_SSD}/boot/efi
+mount /dev/sda1 /${MOUNT_HDD}/boot/efi
 
-mount -o noatime,compress=zstd,space_cache,subvol=@home /dev/mapper/nvme0n1p2_crypt /$MOUNT_SSD/home
-mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@home /dev/mapper/sda2_crypt /$MOUNT_HDD/home
+mount -o noatime,compress=zstd,space_cache,subvol=@home /dev/mapper/nvme0n1p2_crypt /${MOUNT_SSD}/home
+mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@home /dev/mapper/sda2_crypt /${MOUNT_HDD}/home
 
-mount -o noatime,compress=zstd,space_cache,subvol=@.snapshots /dev/mapper/nvme0n1p2_crypt /$MOUNT_SSD/.snapshots
-mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@.snapshots /dev/mapper/sda2_crypt /$MOUNT_HDD/.snapshots
+mount -o noatime,compress=zstd,space_cache,subvol=@.snapshots /dev/mapper/nvme0n1p2_crypt /${MOUNT_SSD}/.snapshots
+mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@.snapshots /dev/mapper/sda2_crypt /${MOUNT_HDD}/.snapshots
 
-mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@data /dev/mapper/sda2_crypt /$MOUNT_SSD/data/Data
-mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@data /dev/mapper/sda2_crypt /$MOUNT_HDD/data/Data
+mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@data /dev/mapper/sda2_crypt /${MOUNT_SSD}/data/Data
+mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@data /dev/mapper/sda2_crypt /${MOUNT_HDD}/data/Data
 
-mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@massive_data /dev/mapper/sda2_crypt /$MOUNT_SSD/data/MassiveData
-mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@massive_data /dev/mapper/sda2_crypt /$MOUNT_HDD/data/MassiveData
+mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@massive_data /dev/mapper/sda2_crypt /${MOUNT_SSD}/data/MassiveData
+mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@massive_data /dev/mapper/sda2_crypt /${MOUNT_HDD}/data/MassiveData
 
 sleep 3;
 
@@ -184,24 +193,26 @@ reflector --verbose --country 'Ukraine' --sort rate --save /etc/pacman.d/mirrorl
 sleep 2;
 
 echo "Install base package"
-pacstrap /$MOUNT_SSD base base-devel linux linux-firmware nano dhcpcd intel-ucode zsh reflector btrfs-progs go networkmanager man
-pacstrap /$MOUNT_HDD base base-devel linux linux-firmware nano dhcpcd intel-ucode zsh reflector btrfs-progs go networkmanager man
+pacstrap /${MOUNT_SSD} base base-devel linux linux-firmware nano dhcpcd intel-ucode zsh reflector btrfs-progs go networkmanager man
+pacstrap /${MOUNT_HDD} base base-devel linux linux-firmware nano dhcpcd intel-ucode zsh reflector btrfs-progs go networkmanager man
 sleep 2;
 
 echo "Copying mirrorlist"
-cp /etc/pacman.d/mirrorlist /$MOUNT_SSD/etc/pacman.d/mirrorlist
-cp /etc/pacman.d/mirrorlist /$MOUNT_HDD/etc/pacman.d/mirrorlist
+cp /etc/pacman.d/mirrorlist /${MOUNT_SSD}/etc/pacman.d/mirrorlist
+cp /etc/pacman.d/mirrorlist /${MOUNT_HDD}/etc/pacman.d/mirrorlist
 sleep 2;
 
 echo "Setting system"
-genfstab -U /$MOUNT_SSD >> /$MOUNT_SSD/etc/fstab
-genfstab -U /$MOUNT_HDD >> /$MOUNT_HDD/etc/fstab
+genfstab -U /${MOUNT_SSD} >> /${MOUNT_SSD}/etc/fstab
+genfstab -U /${MOUNT_HDD} >> /${MOUNT_HDD}/etc/fstab
 
-cp /etc/zsh/* /$MOUNT_SSD/etc/zsh/
-cp /etc/zsh/* /$MOUNT_HDD/etc/zsh/
+cp /etc/zsh/* /${MOUNT_SSD}/etc/zsh/
+cp /etc/zsh/* /${MOUNT_HDD}/etc/zsh/
 echo "Chroot enter"
-cp -r /root/Arch_linux_install /$MOUNT_SSD/root/
-cp -r /root/Arch_linux_install /$MOUNT_HDD/root/
+cp -r /root/Arch_linux_install /${MOUNT_SSD}/root/
+cp -r /root/Arch_linux_install /${MOUNT_HDD}/root/
+
+
 
 # arch-chroot /mnt bash -c "$(echo "Please run 'bash /root/Arch_linux_install/install_and_settings_programs.sh'")"
 # arch-chroot /mnt bash -c "$(/root/Arch_linux_install/install_and_settings_programs.sh)"
