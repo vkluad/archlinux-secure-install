@@ -115,8 +115,8 @@ dd if=/dev/random of=/$MOUNT_SD/rhaTfhJBvhSvgK9E2hSZF4P4u6s8NUsY bs=1024 count=4
 cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --hash whirlpool --iter-time 4058 --key-size 512 --pbkdf argon2id --sector-size 4096 --use-random  /dev/nvme0n1p2 /$MOUNT_SD/4HA6LZWyLGTu6bQv967KEQH5wg7WersN
 cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --hash whirlpool --iter-time 4058 --key-size 512 --pbkdf argon2id --sector-size 4096 --use-random  /dev/sda2 /$MOUNT_SD/rhaTfhJBvhSvgK9E2hSZF4P4u6s8NUsY
 
-cryptsetup luksHeaderBackup /dev/sda2 --header-backup-file /$MOUNT_SD/EvvXtpkDXFTNqd22ePpv7ECtHLmNgBpU        # luksHeaderBackup for sda2
-cryptsetup luksHeaderBackup /dev/nvme0n1p2 --header-backup-file /$MOUNT_SD/rVAd46RpwrNw97kNEnBFj7tsNsx3yMPq   # luksHeaderBackup for nvme0n1
+cryptsetup luksHeaderBackup /dev/sda2 --header-backup-file /$MOUNT_SD/EvvXtpkDXFTNqd22ePpv7ECtHLmNgBpU        # luksHeaderBackup for sda2 /$MOUNT_SD/HeaderBackup_sda2
+cryptsetup luksHeaderBackup /dev/nvme0n1p2 --header-backup-file /$MOUNT_SD/rVAd46RpwrNw97kNEnBFj7tsNsx3yMPq   # luksHeaderBackup for nvme0n1 /$MOUNT_SD/HeaderBackup_nvme0n1p2
 
 echo YES | cryptsetup luksDump --key-file /$MOUNT_SD/4HA6LZWyLGTu6bQv967KEQH5wg7WersN /dev/nvme0n1p2 --dump-master-key > /$MOUNT_SD/nxbD8Zu4Qk9xFz2Bc66eweQQkZfbRn64 # master-key-file for nvme0n1
 echo YES | cryptsetup luksDump --key-file /$MOUNT_SD/rhaTfhJBvhSvgK9E2hSZF4P4u6s8NUsY /dev/sda2 --dump-master-key > /$MOUNT_SD/c9mrqFA8Lh5mf7xWqTNdk3CHgU7Xecrz # master-key-file for sda
@@ -152,10 +152,9 @@ btrfs subvolume create /$MOUNT_HDD/@massive_data
 umount /dev/mapper/nvme0n1p2_crypt
 umount /dev/mapper/sda2_crypt
 
-################################################################################
 
-mount -o noatime,compress=lzo,space_cache,subvol=@ /dev/mapper/nvme0n1p2_crypt /$MOUNT_SSD/
-mount -o noatime,nodatacow,compress=lzo,space_cache,subvol=@ /dev/mapper/sda2_crypt /$MOUNT_HDD/
+mount -o noatime,compress=zstd,space_cache,subvol=@ /dev/mapper/nvme0n1p2_crypt /$MOUNT_SSD/
+mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@ /dev/mapper/sda2_crypt /$MOUNT_HDD/
 
 mkdir /$MOUNT_SSD/{boot,home,.snapshots,data}
 mkdir /$MOUNT_HDD/{boot,home,.snapshots,data}
@@ -166,18 +165,17 @@ mkdir /$MOUNT_HDD/data/{Data,MassiveData}
 mount /dev/nvme0n1p1 /$MOUNT_SSD/boot
 mount /dev/sda1 /$MOUNT_HDD/boot
 
-mount -o noatime,compress=lzo,space_cache,subvol=@home /dev/mapper/nvme0n1p2_crypt /$MOUNT_SSD/home
-mount -o noatime,nodatacow,compress=lzo,space_cache,subvol=@home /dev/mapper/sda2_crypt /$MOUNT_HDD/home
+mount -o noatime,compress=zstd,space_cache,subvol=@home /dev/mapper/nvme0n1p2_crypt /$MOUNT_SSD/home
+mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@home /dev/mapper/sda2_crypt /$MOUNT_HDD/home
 
-mount -o noatime,compress=lzo,space_cache,subvol=@.snapshots /dev/mapper/nvme0n1p2_crypt /$MOUNT_SSD/.snapshots
-mount -o noatime,nodatacow,compress=lzo,space_cache,subvol=@.snapshots /dev/mapper/sda2_crypt /$MOUNT_HDD/.snapshots
-################################################################################
+mount -o noatime,compress=zstd,space_cache,subvol=@.snapshots /dev/mapper/nvme0n1p2_crypt /$MOUNT_SSD/.snapshots
+mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@.snapshots /dev/mapper/sda2_crypt /$MOUNT_HDD/.snapshots
 
-mount -o noatime,nodatacow,compress=lzo,space_cache,subvol=@data /dev/mapper/sda2_crypt /$MOUNT_SSD/data/Data
-mount -o noatime,nodatacow,compress=lzo,space_cache,subvol=@data /dev/mapper/sda2_crypt /$MOUNT_HDD/data/Data
+mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@data /dev/mapper/sda2_crypt /$MOUNT_SSD/data/Data
+mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@data /dev/mapper/sda2_crypt /$MOUNT_HDD/data/Data
 
-mount -o noatime,nodatacow,compress=lzo,space_cache,subvol=@massive_data /dev/mapper/sda2_crypt /$MOUNT_SSD/data/MassiveData
-mount -o noatime,nodatacow,compress=lzo,space_cache,subvol=@massive_data /dev/mapper/sda2_crypt /$MOUNT_HDD/data/MassiveData
+mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@massive_data /dev/mapper/sda2_crypt /$MOUNT_SSD/data/MassiveData
+mount -o noatime,nodatacow,compress=zstd,space_cache,subvol=@massive_data /dev/mapper/sda2_crypt /$MOUNT_HDD/data/MassiveData
 
 sleep 3;
 
