@@ -9,8 +9,8 @@ do
 	KERNEL=$F
 	INITRAMFS="/boot/intel-ucode.img /boot/initramfs-$(echo $FILE | sed 's/vmlinuz-//').img"
 	EFISTUB=/usr/lib/systemd/boot/efi/linuxx64.efi.stub
-	BUILDDIR=_build
-	OUTIMG=/boot/esp/$(echo $FILE | sed 's/vmlinuz-//').img
+	BUILDDIR=/boot/_build
+	OUTIMG=/boot/EFI/Linux/Archlinux.efi
 	CMDLINE=/etc/cmdline
 
 	mkdir -p $BUILDDIR

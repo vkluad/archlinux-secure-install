@@ -15,7 +15,7 @@ sleep 2;
 makepkg -si
 yay -S wd719x-firmware aic94xx-firmware upd72020x-fw
 yay -S optimus-manager gdm-prime libgdm-prime zoom teams skypeforlinux-stable-bin youtube-music-appimage\
-clion clion-jre clion-cmake clion-gdb clion-lldb
+clion clion-jre clion-cmake clion-gdb clion-lldb plymouth
 
 systemctl enable gdm
 systemctl enable fstrim.timer
