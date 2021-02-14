@@ -146,6 +146,9 @@ btrfs subvolume create /$MOUNT_HDD/@home
 btrfs subvolume create /$MOUNT_SSD/@.snapshots
 btrfs subvolume create /$MOUNT_HDD/@.snapshots
 
+btrfs subvolume create /$MOUNT_HDD/@data
+btrfs subvolume create /$MOUNT_HDD/@massive_data
+
 umount /dev/mapper/nvme0n1p2_crypt
 umount /dev/mapper/sda2_crypt
 
