@@ -27,7 +27,8 @@ cd Arch_linux_install
 >
 ## **Configure mkinitcpio**
 ##### You must edit /etc/mkinitcpio.conf HOOKS and FILES
->```sh
+>
+```sh
 nano /etc/mkinitcpio.conf
 ```
 Edit string who`s include:
