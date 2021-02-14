@@ -152,7 +152,7 @@ umount /dev/mapper/sda2_crypt
 ################################################################################
 
 mount -o noatime,compress=lzo,space_cache,subvol=@ /dev/mapper/nvme0n1p2_crypt /$MOUNT_SSD/
-mount -o noatime,nodatacow,compress=lzo,space_cache,subvol=@ /dev/mapper/nvme0n1p2_crypt /$MOUNT_HDD/
+mount -o noatime,nodatacow,compress=lzo,space_cache,subvol=@ /dev/mapper/sda2_crypt /$MOUNT_HDD/
 
 mkdir /$MOUNT_SSD/{boot,home,.snapshots,data}
 mkdir /$MOUNT_HDD/{boot,home,.snapshots,data}
@@ -164,10 +164,10 @@ mount /dev/nvme0n1p1 /$MOUNT_SSD/boot
 mount /dev/sda1 /$MOUNT_HDD/boot
 
 mount -o noatime,compress=lzo,space_cache,subvol=@home /dev/mapper/nvme0n1p2_crypt /$MOUNT_SSD/home
-mount -o noatime,nodatacow,compress=lzo,space_cache,subvol=@home /dev/mapper/nvme0n1p2_crypt /$MOUNT_HDD/home
+mount -o noatime,nodatacow,compress=lzo,space_cache,subvol=@home /dev/mapper/sda2_crypt /$MOUNT_HDD/home
 
 mount -o noatime,compress=lzo,space_cache,subvol=@.snapshots /dev/mapper/nvme0n1p2_crypt /$MOUNT_SSD/.snapshots
-mount -o noatime,nodatacow,compress=lzo,space_cache,subvol=@.snapshots /dev/mapper/nvme0n1p2_crypt /$MOUNT_HDD/.snapshots
+mount -o noatime,nodatacow,compress=lzo,space_cache,subvol=@.snapshots /dev/mapper/sda2_crypt /$MOUNT_HDD/.snapshots
 ################################################################################
 
 mount -o noatime,nodatacow,compress=lzo,space_cache,subvol=@data /dev/mapper/sda2_crypt /$MOUNT_SSD/data/Data
@@ -203,4 +203,4 @@ cp -r /root/Arch_linux_install /$MOUNT_SSD/root/
 cp -r /root/Arch_linux_install /$MOUNT_HDD/root/
 
 # arch-chroot /mnt bash -c "$(echo "Please run 'bash /root/Arch_linux_install/install_and_settings_programs.sh'")"
-arch-chroot /mnt bash -c "$(/root/Arch_linux_install/install_and_settings_programs.sh)"
+# arch-chroot /mnt bash -c "$(/root/Arch_linux_install/install_and_settings_programs.sh)"

@@ -15,6 +15,7 @@ passwd $USERNAME
 # Vkr75R++++++
 # PasJ3e+-+-+-+
 echo "Password for root user"
+sleep 2;
 passwd
 
 echo 'Added locale in locale.gen'
@@ -36,7 +37,7 @@ ff02::2    ip6-allrouters" >> /etc/hosts
 
 # echo "[Match]
 # Name=en*
-# DHCP=ipv4"
+# DHCP=ipv4" >
 
 echo 'Recommented library for 32-bit apps'
 cp -r ./configuration/pacman.conf /etc/pacman.conf
