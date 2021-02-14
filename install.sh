@@ -103,7 +103,7 @@ echo "Format disk and mount on /mnt"
 
 MOUNT_SSD=nvme_root_crypt
 MOUNT_HDD=sda_root_crypt
-MOUNT_SD=mmcblk_saver
+MOUNT_SD=mmcblk
 mkfs.ext4 /dev/mmcblk0p1
 mkdir /{$MOUNT_SD ,$MOUNT_HDD ,$MOUNT_SSD}
 
@@ -127,8 +127,8 @@ echo YES | cryptsetup luksDump --key-file /$MOUNT_SD/rhaTfhJBvhSvgK9E2hSZF4P4u6s
 cryptsetup luksOpen  --key-file /$MOUNT_SD/4HA6LZWyLGTu6bQv967KEQH5wg7WersN /dev/nvme0n1p2 nvme0n1p2_crypt
 cryptsetup luksOpen  --key-file /$MOUNT_SD/rhaTfhJBvhSvgK9E2hSZF4P4u6s8NUsY /dev/sda2 sda2_crypt
 
-mkfs.vfat -S 4096 /dev/nvme0n1p1
-mkfs.vfat -S 4096 /dev/sda1
+mkfs.fat -F32 -S 4096 /dev/nvme0n1p1
+mkfs.fat -F32 -S 4096 /dev/sda1
 
 ################################################################################
 mkfs.btrfs -s 4096 /dev/mapper/nvme0n1p2_crypt
