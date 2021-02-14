@@ -31,14 +31,17 @@ cd Arch_linux_install
 ```sh
 nano /etc/mkinitcpio.conf
 ```
+
 Edit string who`s include:
->```
+>
+```
 ...
 FILES=(vfat)
 ...
 HOOKS=(base systemd sd-plymouth autodetect keyboard sd-vconsole modconf block sd-encrypt filesystems fsck)
 ...
 ```
+
 ## **Installation EFISTUB bootloader**
 ##### You must configure efi vars.
 >*So, those both scripts also install base system. In order to install loader or EFISTUB you must run this command:*
