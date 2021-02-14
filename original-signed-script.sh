@@ -9,7 +9,7 @@ do
 	KERNEL=$F
 	INITRAMFS="/boot/intel-ucode.img /boot/initramfs-$(echo $FILE | sed 's/vmlinuz-//').img"
 	EFISTUB=/usr/lib/systemd/boot/efi/linuxx64.efi.stub
-	BUILDDIR=/boot/_build
+	BUILDDIR=/boot/_build_EFISTUB
 	OUTIMG=/boot/EFI/Linux/Archlinux.efi
 	CMDLINE=/etc/cmdline
 

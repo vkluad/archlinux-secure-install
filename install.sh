@@ -107,12 +107,12 @@ MOUNT_SD=mmcblk
 mkfs.ext4 /dev/mmcblk0p1
 mkdir /{${MOUNT_SD} ,${MOUNT_HDD} ,${MOUNT_SSD}}
 
-LUKS_KEY_SSD=4HA6LZWyLGTu6bQv967KEQH5wg7WersN
-LUKS_KEY_HDD=rhaTfhJBvhSvgK9E2hSZF4P4u6s8NUsY
-HEADERBACKUP_SSD=rVAd46RpwrNw97kNEnBFj7tsNsx3yMPq
-HEADERBACKUP_HDD=EvvXtpkDXFTNqd22ePpv7ECtHLmNgBpU
-MASTERKEY_SSD=nxbD8Zu4Qk9xFz2Bc66eweQQkZfbRn64
-MASTERKEY_HDD=c9mrqFA8Lh5mf7xWqTNdk3CHgU7Xecrz
+LUKS_KEY_SSD=nvme0n1p2_luks.key
+LUKS_KEY_HDD=sda2_luks.key
+HEADERBACKUP_SSD=nvme0n1p2_luks_headerbackup.bin
+HEADERBACKUP_HDD=sda2_luks_headerbackup.bin
+MASTERKEY_SSD=nvme0n1p2_luks_master_key
+MASTERKEY_HDD=sda2_luks_master_key
 
 mount /dev/mmcblk0p1 /${MOUNT_SD}
 dd if=/dev/random of=/${MOUNT_SD}/${LUKS_KEY_SSD} bs=1024 count=4 # create secret key nvme0n1 luks-nvme0n1p2.key

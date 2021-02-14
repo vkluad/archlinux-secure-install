@@ -35,18 +35,18 @@ Edit string who`s include:
 ...
 FILES=(vfat)
 ...
-HOOKS=(base systemd autodetect keyboard sd-vconsole modconf block sd-encrypt filesystems fsck)
+HOOKS=(base systemd sd-plymouth autodetect keyboard sd-vconsole modconf block sd-encrypt filesystems fsck)
 ...
 ```
 ## **Installation EFISTUB bootloader**
 ##### You must configure efi vars.
 >*So, those both scripts also install base system. In order to install loader or EFISTUB you must run this command:*
  ```sh
-efibootmgr -d /dev/nvme0n1 -p 1 -c -L "Arch linux encrypt nvme" -l \vmlinuz-linux -u "dm.luks.name=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX=nvme0n1p2_crypt rd.luks.key=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX=/4HA6LZWyLGTu6bQv967KEQH5wg7WersN:UUID=ZZZZZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZZZZZZZZZ root=/dev/mapper/nvme0n1p2_crypt rw rootflags=subvol=@ initrd=\intel-ucode.img initrd=\initramfs-linux.img"
+efibootmgr -d /dev/nvme0n1 -p 1 -c -L "Arch linux encrypt nvme" -l \vmlinuz-linux -u "rd.luks.name=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX=nvme0n1p2_crypt rd.luks.key=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX=/4HA6LZWyLGTu6bQv967KEQH5wg7WersN:UUID=ZZZZZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZZZZZZZZZ root=/dev/mapper/nvme0n1p2_crypt rw rootflags=subvol=@ initrd=\intel-ucode.img initrd=\initramfs-linux.img"
 ```
 >*For sda:*
 ```sh
-efibootmgr -d /dev/sda -p 1 -c -L "Arch linux encrypt sda" -l \vmlinuz-linux -u "dm.luks.name=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX=sda2_crypt rd.luks.key=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX=rhaTfhJBvhSvgK9E2hSZF4P4u6s8NUsY:UUID=ZZZZZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZZZZZZZZZ root=/dev/mapper/sda2_crypt rw rootflags=subvol=@ initrd=\intel-ucode.img initrd=\initramfs-linux.img"
+efibootmgr -d /dev/sda -p 1 -c -L "Arch linux encrypt sda" -l \vmlinuz-linux -u "rd.luks.name=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX=sda2_crypt rd.luks.key=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX=rhaTfhJBvhSvgK9E2hSZF4P4u6s8NUsY:UUID=ZZZZZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZZZZZZZZZ root=/dev/mapper/sda2_crypt rw rootflags=subvol=@ initrd=\intel-ucode.img initrd=\initramfs-linux.img"
 ```
 >*XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX this UUID encryption drive,\
  ZZZZZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZZZZZZZZZ this UUID drive how`s include key file*
