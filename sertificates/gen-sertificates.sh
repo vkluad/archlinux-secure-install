@@ -1,4 +1,8 @@
 #!/bin/bash
+echo "This script generated seritficates in your current folder"
+echo "If you chose other folder please press Ctrl-C and go to the other folder"
+echo "Otherwise press Enter"
+read
 
 echo -n "Enter a Common Name to embed in the keys: "
 read NAME
@@ -13,7 +17,7 @@ openssl x509 -in PK.crt -out PK.cer -outform DER
 openssl x509 -in KEK.crt -out KEK.cer -outform DER
 openssl x509 -in DB.crt -out DB.cer -outform DER
 
-GUID=`python2 -c 'import uuid; print str(uuid.uuid1())'`
+GUID=`python -c 'import uuid; print(str(uuid.uuid1()))'`
 echo $GUID > myGUID.txt
 
 cert-to-efi-sig-list -g $GUID PK.crt PK.esl
