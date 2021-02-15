@@ -119,8 +119,8 @@ dd if=/dev/random of=/${MOUNT_SD}/${LUKS_KEY_SSD} bs=1024 count=4 # create secre
 dd if=/dev/random of=/${MOUNT_SD}/${LUKS_KEY_HDD} bs=1024 count=4 # create secret key sda luks-sda2.key
 
 # cryptsetup
-cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --hash whirlpool --iter-time 4058 --key-size 512 --pbkdf argon2id --sector-size 4096 --use-random  /dev/nvme0n1p2 /${MOUNT_SD}/${LUKS_KEY_SSD}
-cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --hash whirlpool --iter-time 4058 --key-size 512 --pbkdf argon2id --sector-size 4096 --use-random  /dev/sda2 /${MOUNT_SD}/${LUKS_KEY_HDD}
+cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --hash whirlpool --iter-time 5058 --key-size 512 --pbkdf argon2id --sector-size 4096 --use-random  /dev/nvme0n1p2 /${MOUNT_SD}/${LUKS_KEY_SSD}
+cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --hash whirlpool --iter-time 5058 --key-size 512 --pbkdf argon2id --sector-size 4096 --use-random  /dev/sda2 /${MOUNT_SD}/${LUKS_KEY_HDD}
 
 cryptsetup luksHeaderBackup /dev/sda2 --header-backup-file /${MOUNT_SD}/${HEADERBACKUP_HDD}        # luksHeaderBackup for sda2 /${MOUNT_SD}/HeaderBackup_sda2
 cryptsetup luksHeaderBackup /dev/nvme0n1p2 --header-backup-file /${MOUNT_SD}/${HEADERBACKUP_SSD}   # luksHeaderBackup for nvme0n1 /${MOUNT_SD}/HeaderBackup_nvme0n1p2
