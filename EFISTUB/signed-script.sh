@@ -1,16 +1,10 @@
 #!/bin/bash
-
-# for F in $(find /boot -name "vmlinuz-*")
-# do
-# F=$(echo $F | sed 's/^\///') # Remove '/' in beginning of path
-# FILE=$(echo $F | sed 's/boot\///')
 BOOTDIR=/boot
 CERTDIR=/root/keys # must edit
 KERNEL=/boot/vmlinuz-linux
 INITRAMFS="/boot/intel-ucode.img /boot/initramfs-linux.img"
 EFISTUB=/usr/lib/systemd/boot/efi/linuxx64.efi.stub
 BUILDDIR=/boot/_build_EFISTUB
-# OUTIMG=/boot/esp/$(echo $FILE | sed 's/vmlinuz-//').img
 OUTEFI=/boot/efi/EFI/Linux/Archlinux.efi
 CMDLINE=${BUILDDIR}/cmdline
 
@@ -29,5 +23,3 @@ cat ${INITRAMFS} > ${BUILDDIR}/initramfs.img
 /usr/bin/sbsign --key ${CERTDIR}/DB.key --cert ${CERTDIR}/DB.crt --output ${BUILDDIR}/Archlinux-signed.efi ${BUILDDIR}/Archlinux-nosigned.efi
 
 cp ${BUILDDIR}/Archlinux-signed.efi ${OUTEFI}
-
-# done
