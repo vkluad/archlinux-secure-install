@@ -1,5 +1,6 @@
 #!/bin/bash
 
+sudo dracut -f
 for F in $(find /boot -name "vmlinuz-*")
 do
 	F=$(echo $F | sed 's/^\///') # Remove '/' in beginning of path
