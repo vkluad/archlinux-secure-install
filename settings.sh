@@ -11,9 +11,6 @@ sed -i 's/.*# %wheel ALL=(ALL) ALL.*/%wheel ALL=(ALL) ALL/' /etc/sudoers
 
 echo "Password for user $USERNAME"
 passwd $USERNAME
-# TIMhey -----
-# Vkr75R++++++
-# PasJ3e+-+-+-+
 echo "Password for root user"
 sleep 2;
 passwd
@@ -35,24 +32,8 @@ echo "127.0.0.1  localhost
 ff02::1    ip6-allnodes
 ff02::2    ip6-allrouters" >> /etc/hosts
 
-# echo "[Match]
-# Name=en*
-# DHCP=ipv4" >
 
 echo 'Recommented library for 32-bit apps'
 cp -r ./configuration/pacman.conf /etc/pacman.conf
 pacman -Syy
 systemctl enable NetworkManager
-
-# echo "Install bootloader"
-# bootctl --path=/boot install
-#
-# echo "default\tArch
-# timeout\t0" > /boot/loader/loader.conf
-#
-# PARTUUID="$(blkid /dev/$NAME_SSD\p2 | sed -n '/.*PARTUUID="/s///;s/"//p')"
-# echo "title\tArch Linux
-# linux\t/vmlinuz-linux
-# initrd\t/intel-ucode.img
-# initrd\t/initramfs-linux.img
-# options\troot=PARTUUID=$PARTUUID rw rootflags=subvol=@" > /boot/loader/entries/Arch.conf
