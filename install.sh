@@ -18,7 +18,7 @@ sleep 2
 
 fdisk -l | grep "Disk /"
 START_SEC=40
-BOOT_SIZE="200M"
+BOOT_SIZE="300M"
 HOME_SIZE="10G"
 
 
