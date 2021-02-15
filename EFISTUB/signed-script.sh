@@ -1,4 +1,5 @@
 #!/bin/bash
+sudo dracut -f
 BOOTDIR=/boot
 CERTDIR=/root/keys # must edit
 KERNEL=/boot/vmlinuz-linux
