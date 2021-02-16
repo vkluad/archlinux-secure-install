@@ -23,8 +23,10 @@ clion clion-jre clion-cmake clion-gdb clion-lldb plymouth
 systemctl enable gdm
 systemctl enable fstrim.timer
 
-cp -r /root/archlinux-secure-install/configuration/optimus-manager.conf /etc/optimus-manager/optimus-manager.conf
-cp -r /root/archlinux-secure-install/configuration/dracut.conf /usr/lib/dracut/dracut.conf.d/dracut.conf
+sudo cp -r /root/archlinux-secure-install/configuration/optimus-manager.conf /etc/optimus-manager/optimus-manager.conf
+sudo cp -r /root/archlinux-secure-install/configuration/dracut.conf /usr/lib/dracut/dracut.conf.d/dracut.conf
+sudo pacman -R mkinitcpio
+
 # configure pulse audio
 sudo echo "load-module module-echo-cancel source_name=noechosource sink_name=noechosink
 set-default-source noechosource">>/etc/pulse/default.pa # removes noise from the micro

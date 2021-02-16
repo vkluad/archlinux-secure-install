@@ -34,6 +34,6 @@ ff02::2    ip6-allrouters" >> /etc/hosts
 
 
 echo 'Recommented library for 32-bit apps'
-cp -r ./configuration/pacman.conf /etc/pacman.conf
+cp -r /root/archlinux-secure-install/configuration/pacman.conf /etc/pacman.conf
 pacman -Syy
 systemctl enable NetworkManager
