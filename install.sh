@@ -77,25 +77,25 @@ echo "Created partitions on sda device"
 ) | gdisk /dev/sda
 
 
-echo "Created partitions on SD Card"
-(
-    echo o;
-    echo y;
-
-    echo x;
-    echo l;
-    echo $START_SEC;
-    echo m;
-
-    echo n;
-    echo;
-    echo;
-    echo;
-    echo 8300;
-
-    echo w;
-    echo y;
-) | gdisk /dev/mmcblk0
+# echo "Created partitions on SD Card"
+# (
+#     echo o;
+#     echo y;
+#
+#     echo x;
+#     echo l;
+#     echo $START_SEC;
+#     echo m;
+#
+#     echo n;
+#     echo;
+#     echo;
+#     echo;
+#     echo 8300;
+#
+#     echo w;
+#     echo y;
+# ) | gdisk /dev/mmcblk0
 
 
 
@@ -104,7 +104,7 @@ echo "Format disk and mount on /mnt"
 MOUNT_SSD=nvme_root_crypt
 MOUNT_HDD=sda_root_crypt
 MOUNT_SD=mmcblk
-mkfs.ext4 /dev/mmcblk0p2
+# mkfs.ext4 /dev/mmcblk0p2
 mkdir /{${MOUNT_SD} ,${MOUNT_HDD} ,${MOUNT_SSD}}
 
 LUKS_KEY_SSD=nvme0n1p2_luks.key
