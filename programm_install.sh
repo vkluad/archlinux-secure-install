@@ -1,11 +1,11 @@
 #!/bin/bash
 sudo pacman -Suy dialog wpa_supplicant gnome nvidia nvidia-prime nvidia-settings wget git atom gimp \
 firefox blender cuda libreoffice-still discord telegram-desktop vulkan-devel nvidia-cg-toolkit \
-lib32-nvidia-cg-toolkit chromium tor ghex handbrake htop jdk11-openjdk jre-openjdk \
+lib32-nvidia-cg-toolkit chromium tor ghex htop jdk11-openjdk jre-openjdk \
 jre-openjdk-headless jre11-openjdk jre11-openjdk-headless shotcut efibootmgr embree \
 exfat-utils gstreamer-vaapi iotop screen neofetch zerotier-one ncdu ntfs-3g rsync \
 chrome-gnome-shell torbrowser-launcher qbittorrent obs-studio clevis tpm2-tools tpm2-tss \
-tpm2-totp tpm2-abrmd dracut libpwquality luksmeta Nmap squashfs-tools efitools
+tpm2-totp tpm2-tss-engine tpm2-abrmd dracut libpwquality luksmeta nmap squashfs-tools efitools
 
 
 cd /tmp
