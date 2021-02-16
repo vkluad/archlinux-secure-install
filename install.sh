@@ -209,10 +209,5 @@ genfstab -U /${MOUNT_HDD} >> /${MOUNT_HDD}/etc/fstab
 cp /etc/zsh/* /${MOUNT_SSD}/etc/zsh/
 cp /etc/zsh/* /${MOUNT_HDD}/etc/zsh/
 echo "Chroot enter"
-cp -r /root/Arch_linux_install /${MOUNT_SSD}/root/
-cp -r /root/Arch_linux_install /${MOUNT_HDD}/root/
-
-
-
-# arch-chroot /mnt bash -c "$(echo "Please run 'bash /root/Arch_linux_install/install_and_settings_programs.sh'")"
-# arch-chroot /mnt bash -c "$(/root/Arch_linux_install/install_and_settings_programs.sh)"
+cp -r /root/archlinux-secure-install /${MOUNT_SSD}/root/
+cp -r /root/archlinux-secure-install /${MOUNT_HDD}/root/
