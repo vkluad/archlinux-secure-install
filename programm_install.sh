@@ -4,7 +4,8 @@ firefox blender cuda libreoffice-still discord telegram-desktop vulkan-devel nvi
 lib32-nvidia-cg-toolkit chromium tor ghex handbrake htop jdk11-openjdk jre-openjdk \
 jre-openjdk-headless jre11-openjdk jre11-openjdk-headless shotcut efibootmgr embree \
 exfat-utils gstreamer-vaapi iotop screen neofetch zerotier-one ncdu ntfs-3g rsync \
-chrome-gnome-shell torbrowser-launcher qbittorrent obs-studio 
+chrome-gnome-shell torbrowser-launcher qbittorrent obs-studio clevis tpm2-tools tpm2-tss \
+tpm2-totp tpm2-abrmd dracut libpwquality Luksmeta Nmap squashfs-tools
 
 
 cd /tmp
