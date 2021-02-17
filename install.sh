@@ -139,8 +139,8 @@ mkfs.fat -F32 -S 4096 /dev/nvme0n1p1
 mkfs.fat -F32 -S 4096 /dev/sda1
 
 ################################################################################
-mkfs.btrfs -s 4096 /dev/mapper/nvme0n1p2_crypt
-mkfs.btrfs -s 4096 /dev/mapper/sda2_crypt
+mkfs.btrfs -f -s 4096 /dev/mapper/nvme0n1p2_crypt
+mkfs.btrfs -f -s 4096 /dev/mapper/sda2_crypt
 
 mount /dev/mapper/nvme0n1p2_crypt /${MOUNT_SSD}
 mount /dev/mapper/sda2_crypt /${MOUNT_HDD}
