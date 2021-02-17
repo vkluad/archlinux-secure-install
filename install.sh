@@ -105,7 +105,9 @@ MOUNT_SSD=nvme_root_crypt
 MOUNT_HDD=sda_root_crypt
 MOUNT_SD=mmcblk
 # mkfs.ext4 /dev/mmcblk0p2
-mkdir /{${MOUNT_SD} ,${MOUNT_HDD} ,${MOUNT_SSD}}
+mkdir /$MOUNT_SD
+mkdir /$MOUNT_HDD
+mkdir /$MOUNT_SSD
 
 LUKS_KEY_SSD="nvme0n1p2_luks.key"
 LUKS_KEY_HDD="sda2_luks.key"
@@ -113,7 +115,7 @@ HEADERBACKUP_SSD="nvme0n1p2_luks_headerbackup.bin"
 HEADERBACKUP_HDD="sda2_luks_headerbackup.bin"
 MASTERKEY_SSD="nvme0n1p2_luks_master_key"
 MASTERKEY_HDD="sda2_luks_master_key"
-
+mount /dev/mmcblk0p1 /${MOUNT_SD}
 dd if=/dev/random of=/${MOUNT_SD}/${LUKS_KEY_SSD} bs=1024 count=4 # create secret key nvme0n1 luks-nvme0n1p2.key
 dd if=/dev/random of=/${MOUNT_SD}/${LUKS_KEY_HDD} bs=1024 count=4 # create secret key sda luks-sda2.key
 
