@@ -64,8 +64,8 @@ I chose nvme0n1 drive, but this just because nvme drive is very fastly.**
  ```sh
  gdisk /dev/nvme0n1
  ```
-In this programm we must created GUID partition table. For this press `o`.\
-Programm send for you some massage like that:\
+  In this programm we must created GUID partition table. For this press `o`.\
+  Programm send for you some massage like that:\
  `This operation deleted all your information in this drive[Y/N]`\
   Your course press `y`.\
   Next, just added **efi** and **linux filesystem** partition , but if you have\
@@ -146,12 +146,12 @@ y
 
 #### **For next manipulation you must have mmcblk device( SD card):**
 * **MountSD card**
-  > ```sh
-    mkdir /mmcblk0
-    mount /dev/mmcblk0p1 /mmcblk0
-    ```
+  ```sh
+  mkdir /mmcblk0
+  mount /dev/mmcblk0p1 /mmcblk0
+  ```
 * **Create secret key for luks device**
-  > ```sh
+  ```sh
   dd if=/dev/random of=/mmcblk0/nvme0n1p2_luks.key bs=1024 count=4
   ```
 * **Format to luks partition**
@@ -168,19 +168,19 @@ y
   cryptsetup luksHeaderBackup /dev/nvme0n1p2 --header-backup-file /mmcblk0/nvme0n1p2_luks_headerbackup.bin
   ```
 * **Create master key backup**
-```sh
-echo YES | cryptsetup luksDump --key-file /mmcblk0/nvme0n1p2_luks.key /dev/nvme0n1p2 --dump-master-key > /mmcblk0/nvme0n1p2_luks_master_key
-```
+  ```sh
+  echo YES | cryptsetup luksDump --key-file /mmcblk0/nvme0n1p2_luks.key /dev/nvme0n1p2 --dump-master-key > /mmcblk0/nvme0n1p2_luks_master_key
+  ```
 * **Create passphrase (recommend 16+ random symbols)**
-```sh
-cryptsetup luksAddKey --key-file /mmcblk0/nvme0n1p2_luks.key --hash whirlpool --pbkdf argon2id --iter-time 5058 /dev/nvme0n1p2
-```
+  ```sh
+  cryptsetup luksAddKey --key-file /mmcblk0/nvme0n1p2_luks.key --hash whirlpool --pbkdf argon2id --iter-time 5058 /dev/nvme0n1p2
+  ```
 * **Open crypted device**
-```sh
-cryptsetup luksOpen  --key-file /mmcblk0/nvme0n1p2_luks.key /dev/nvme0n1p2 nvme0n1p2_crypt
-```
+  ```sh
+  cryptsetup luksOpen  --key-file /mmcblk0/nvme0n1p2_luks.key /dev/nvme0n1p2 nvme0n1p2_crypt
+  ```
 * **Format all partitions**
-```sh
-mkfs.fat -F32 /dev/nvme0n1p1
-mkfs.btrfs -f /dev/mapper/nvme0n1p2_crypt
-```
+  ```sh
+  mkfs.fat -F32 /dev/nvme0n1p1
+  mkfs.btrfs -f /dev/mapper/nvme0n1p2_crypt
+  ```
