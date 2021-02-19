@@ -155,7 +155,7 @@ y
   dd if=/dev/random of=/mmcblk0/nvme0n1p2_luks.key bs=1024 count=4
   ```
 * **Format to luks partition**
-  >```sh
+  > ```sh
   cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --hash whirlpool --iter-time 5058 --key-size 512 --pbkdf argon2id --use-random  /dev/nvme0n1p2 /mmcblk0/nvme0n1p2_luks.key
   ```
   `--chipher aes-xts-plain64` - it's cipher who used in crypt you device, but your can chose another cipher\
