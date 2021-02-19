@@ -64,7 +64,7 @@ I chose nvme0n1 drive, but this just because nvme drive is very fastly.**
  ```sh
  gdisk /dev/nvme0n1
  ```
-  In this programm we must created GUID partition table. For this press `o`.\
+ >In this programm we must created GUID partition table. For this press `o`.\
   Programm send for you some massage like that:\
  `This operation deleted all your information in this drive[Y/N]`\
   Your course press `y`.\
