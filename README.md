@@ -188,66 +188,65 @@ y
   mkfs.btrfs -f /dev/mapper/nvme0n1p2_crypt
   ```
 * **Mount created filesystem and create subvolume**
-```sh
-mount /dev/mapper/nvme0n1p2_crypt /mnt
-btrfs subvolume create /mnt/@
-btrfs subvolume create /mnt/@home
-btrfs subvolume create /mnt/@.snapshots
-umount /dev/mapper/nvme0n1p2_crypt
-```
->**Also you can create other subvolume**
+  ```sh
+  mount /dev/mapper/nvme0n1p2_crypt /mnt
+  btrfs subvolume create /mnt/@
+  btrfs subvolume create /mnt/@home
+  btrfs subvolume create /mnt/@.snapshots
+  umount /dev/mapper/nvme0n1p2_crypt
+  ```
+  >**Also you can create other subvolume**
 
 * **Mount filesystem with disk parameters**
-```sh
-mount -o noatime,compress=zstd,space_cache,subvol=@\
- /dev/mapper/nvme0n1p2_crypt /mnt/
-```
->We must create folders for mount other subvolume
-```sh
-mkdir -p /mnt/{boot/efi,home,.snapshots,data}
-```
->`data` folder created for you data disk, if you haven't other disk or memory your do not need it.
->
->**Mount efi partition:**
-```sh
-mount /dev/nvme0n1p1 /mnt/boot/efi
-```
+  ```sh
+  mount -o noatime,compress=zstd,space_cache,subvol=@\
+   /dev/mapper/nvme0n1p2_crypt /mnt/
+  ```
+  >We must create folders for mount other subvolume
+  ```sh
+  mkdir -p /mnt/{boot/efi,home,.snapshots,data}
+  ```
+  >`data` folder created for you data disk, if you haven't other disk or memory your do not need it.
+* **Mount efi partition:**
+  ```sh
+  mount /dev/nvme0n1p1 /mnt/boot/efi
+  ```
 * **Mount other subvolumes:**
-```sh
-mount -o noatime,compress=zstd:7,space_cache,subvol=@home\
- /dev/mapper/nvme0n1p2_crypt /mnt/home
-mount -o noatime,compress=zstd:7,space_cache,subvol=@.snapshots\
- /dev/mapper/nvme0n1p2_crypt /mnt/.snapshots
-```
-or `HDD` added `nodatacow`:
-```sh
- mount -o noatime,nodatacow,compress=zstd:7, ...
+  ```sh
+  mount -o noatime,compress=zstd:7,space_cache,subvol=@home\
+   /dev/mapper/nvme0n1p2_crypt /mnt/home
+  mount -o noatime,compress=zstd:7,space_cache,subvol=@.snapshots\
+   /dev/mapper/nvme0n1p2_crypt /mnt/.snapshots
+  ```
+  or `HDD` added `nodatacow`:
+  ```sh
+   mount -o noatime,nodatacow,compress=zstd:7, ...
 ```
 * **Refresh mirrorlist:**
-```sh
-reflector --verbose --country 'Ukraine' --sort rate --save /etc/pacman.d/mirrorlist
-```
+  ```sh
+  reflector --verbose --country 'Ukraine' --sort rate --save /etc/pacman.d/mirrorlist
+  ```
 * **Install base package:**
-```sh
-pacstrap /mnt base base-devel linux linux-firmware dracut nano dhcpcd intel-ucode zsh reflector btrfs-progs go networkmanager man
-```
+  ```sh
+  pacstrap /mnt base base-devel linux linux-firmware dracut nano dhcpcd intel-ucode zsh reflector btrfs-progs go networkmanager man
+  ```
 * **Copying mirrorlist to new system:**
-```sh
-cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
-```
+  ```sh
+  cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
+  ```
 * **Generate fstab:**
-```sh
-genfstab -U /mnt >> /mnt/etc/fstab
-```
+  ```sh
+  genfstab -U /mnt >> /mnt/etc/fstab
+  ```
 * **Copying settings for zsh to new system:**
-```sh
-cp -r /etc/zsh/* /mnt/etc/zsh/
-```
+  ```sh
+  cp -r /etc/zsh/* /mnt/etc/zsh/
+  ```
 * **Copy git folders to new system:**
-```sh
-cp -r /root/archlinux-secure-install /${MOUNT_SSD}/root/
-```
+  ```sh
+  cp -r /root/archlinux-secure-install /${MOUNT_SSD}/root/
+  ```
 * **Login to chroot:**
-```sh
-arch-chroot /mnt
-```
+  ```sh
+  arch-chroot /mnt
+  ```
