@@ -201,7 +201,7 @@ cp /etc/pacman.d/mirrorlist /${MOUNT_SSD}/etc/pacman.d/mirrorlist
 cp /etc/pacman.d/mirrorlist /${MOUNT_HDD}/etc/pacman.d/mirrorlist
 sleep 2;
 
-echo "Setting system"
+echo "Generate fstab"
 genfstab -U /${MOUNT_SSD} >> /${MOUNT_SSD}/etc/fstab
 genfstab -U /${MOUNT_HDD} >> /${MOUNT_HDD}/etc/fstab
 
