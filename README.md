@@ -246,6 +246,10 @@ y
   ```sh
   cp -r /root/archlinux-secure-install /mnt/root/
   ```
+* **Umount SD card:**
+  ```sh
+  umount /dev/mmcblk0p1
+  ```
 * **Login to chroot:**
   ```sh
   arch-chroot /mnt
@@ -259,9 +263,9 @@ y
   chsh -s /bin/zsh
   ```
 * **Create hostname for you pc**
-```sh
-echo "arch-pc" > /etc/hostaname
-```
+  ```sh
+  echo "arch-pc" > /etc/hostaname
+  ```
 
 * **Create new user**
   ```sh
@@ -302,4 +306,62 @@ echo "arch-pc" > /etc/hostaname
 * **Set up NetworkManager to autostart:**
   ```sh
   systemctl enable NetworkManager
+  ```
+
+  * **Instalation programm for you**
+    ```sh
+    pacman -Suy dialog wpa_supplicant gnome nvidia nvidia-prime nvidia-settings wget git atom gimp \
+    firefox blender cuda libreoffice-still discord telegram-desktop vulkan-devel nvidia-cg-toolkit \
+    lib32-nvidia-cg-toolkit chromium tor ghex htop jdk11-openjdk jre-openjdk \
+    jre-openjdk-headless jre11-openjdk jre11-openjdk-headless shotcut efibootmgr embree \
+    exfat-utils gstreamer-vaapi iotop screen neofetch zerotier-one ncdu ntfs-3g rsync \
+    chrome-gnome-shell torbrowser-launcher qbittorrent obs-studio clevis tpm2-tools tpm2-tss \
+    tpm2-totp tpm2-tss-engine tpm2-abrmd dracut libpwquality luksmeta nmap squashfs-tools efitools sbsingtools
+    ```
+    >**Install yay for installing program from AUR:**
+    >**Your user must have sudo permition**
+    ```sh
+    su USERNAME
+    cd /tmp
+    git clone https://aur.archlinux.org/yay.git
+    cd yay
+    makepkg -si
+    yay -S wd719x-firmware aic94xx-firmware upd72020x-fw plymouth \
+    optimus-manager gdm-prime libgdm-prime zoom teams skypeforlinux-stable-bin\
+    youtube-music-appimage clion clion-jre clion-cmake clion-gdb clion-lldb
+    exit
+    systemctl enable gdm
+    systemctl enable fstrim.timer #if you used to ssd drive
+    ```
+    >You can delete all program except `wd719x-firmware aic94xx-firmware upd72020x-fw plymouth`.
+
+* **Mount SD card for next manipulation**
+  ```sh
+  mkdir -p /run/media/USERNAME/LABEL_DEVICE
+  mount /dev/mmcblk0p1 /run/media/USERNAME/LABEL_DEVICE
+
+  ```
+* **Generate sertificates**
+  ```sh
+  mkdir /run/media/USERNAME/LABEL_DEVICE/UEFI_SIGNATURE_KEY
+  cd /run/media/USERNAME/LABEL_DEVICE/UEFI_SIGNATURE_KEY
+  ./root/archlinux-secure-install/sertificates/get-sertificates.sh
+  ```
+
+* **Configure dracut:**
+  >Before copying you must edit this file:
+  paste you `UUID` in `/root/archlinux-secure-install/configuration/dracut.conf`\
+  And other setting edit in this file.\
+  For seen UUID used to `blkid /dev/nvme0n1p2`\
+  or another drive who used for luks crypt.\
+  For optimus-manager you can find the configuration file you want to copy\
+  to `/etc/optimus-manager/optimus-manager.conf`
+
+  ```sh
+  cp /root/archlinux-secure-install/configuration/dracut.conf /usr/lib/dracut/dracut.conf.d/dracut.conf
+  mkdir /etc/pacman.d/hooks
+  cp /root/archlinux-secure-install/configuration/dracut-install.sh /etc/pacman.d/hooks/dracut-install.sh
+  cp /root/archlinux-secure-install/configuration/dracut-remove.sh /etc/pacman.d/hooks/dracut-remove.sh
+  cp /root/archlinux-secure-install/configuration/*.hook /etc/pacman.d/hooks/
+  mkdir -p /boot/efi/EFI/Linux
   ```
