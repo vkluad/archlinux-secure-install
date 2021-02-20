@@ -157,7 +157,8 @@ y
 * **Format to luks partition**
 
   ```sh
-  cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --hash whirlpool --iter-time 5058 --key-size 512 --pbkdf argon2id --use-random  /dev/nvme0n1p2 /mmcblk0/nvme0n1p2_luks.key
+  cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --hash whirlpool --iter-time 5058\
+   --key-size 512 --pbkdf argon2id --use-random  /dev/nvme0n1p2 /mmcblk0/nvme0n1p2_luks.key
   ```
   > `--chipher aes-xts-plain64` - it's cipher who used in crypt you device, but your can chose another cipher\
    between `aes-xts-plain64`, `serpent-xts-plain64` and `twofish-xts-plain64`(with 512b key-size).\
@@ -169,11 +170,13 @@ y
   ```
 * **Create master key backup**
   ```sh
-  echo YES | cryptsetup luksDump --key-file /mmcblk0/nvme0n1p2_luks.key /dev/nvme0n1p2 --dump-master-key > /mmcblk0/nvme0n1p2_luks_master_key
+  echo YES | cryptsetup luksDump --key-file /mmcblk0/nvme0n1p2_luks.key /dev/nvme0n1p2\
+   --dump-master-key > /mmcblk0/nvme0n1p2_luks_master_key
   ```
 * **Create passphrase (recommend 16+ random symbols)**
   ```sh
-  cryptsetup luksAddKey --key-file /mmcblk0/nvme0n1p2_luks.key --hash whirlpool --pbkdf argon2id --iter-time 5058 /dev/nvme0n1p2
+  cryptsetup luksAddKey --key-file /mmcblk0/nvme0n1p2_luks.key --hash whirlpool\
+   --pbkdf argon2id --iter-time 5058 /dev/nvme0n1p2
   ```
 * **Open crypted device**
   ```sh
