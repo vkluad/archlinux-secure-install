@@ -221,7 +221,7 @@ y
   or `HDD` added `nodatacow`:
   ```sh
    mount -o noatime,nodatacow,compress=zstd:7, ...
-```
+   ```
 * **Refresh mirrorlist:**
   ```sh
   reflector --verbose --country 'Ukraine' --sort rate --save /etc/pacman.d/mirrorlist
@@ -244,9 +244,62 @@ y
   ```
 * **Copy git folders to new system:**
   ```sh
-  cp -r /root/archlinux-secure-install /${MOUNT_SSD}/root/
+  cp -r /root/archlinux-secure-install /mnt/root/
   ```
 * **Login to chroot:**
   ```sh
   arch-chroot /mnt
+  ```
+* **Localtime settings:**
+  ```sh
+  ln -svf /usr/share/zoneinfo/Europe/Kiev /etc/localtime
+  ```
+* **Change command shell:**
+  ```sh
+  chsh -s /bin/zsh
+  ```
+* **Create hostname for you pc**
+```sh
+echo "arch-pc" > /etc/hostaname
+```
+
+* **Create new user**
+  ```sh
+  useradd -m -g users -G wheel -s /bin/zsh USERNAME
+  ```
+  >If you wanna sudo privilegies for your user, you must uncomment `# %wheel ALL=(ALL) ALL` in /etc/sudoers:
+
+* **Create password for you users**
+  >Password for root:
+  ```sh
+  passwd
+  ```
+  >Password for another users:
+  ```sh
+  passwd USERNAME
+  ```
+* **Uncomment you locale in file `/etc/locale.conf`:**
+  > Uncomment `en_US.UTF-8 UTF-8` if your language is english
+* **Generate your locale:**
+  ```sh
+  locale-gen
+  ```
+* **Add your current locale:**
+  ```sh
+  echo 'LANG=en_US.UTF-8' > /etc/locale.conf
+  ```
+* **Added `vconsole.conf` for preload console setting.**
+  ```sh
+  cp /root/archlinux-secure-install/configuration/vconsole.conf /etc/vconsole.conf
+  ```
+* **Added `/etc/hosts` :**
+  ```sh
+  cp /root/archlinux-secure-install/configuration//hosts /etc/hosts
+  ```
+* **For used to lib32 apps you must uncoment:**\
+  `[multilib]` and `Include = /etc/pacman.d/mirrorlist`\
+  in file `/etc/pacman.conf`
+* **Set up NetworkManager to autostart:**
+  ```sh
+  systemctl enable NetworkManager
   ```
