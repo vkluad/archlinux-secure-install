@@ -1,3 +1,5 @@
+# NOT COMPLETED
+
 # **Arch linux Installation script**
 > The script will install arch linux on the encrypted luks partition.
 
