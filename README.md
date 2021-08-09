@@ -367,3 +367,7 @@ y
   cp /root/archlinux-secure-install/configuration/*.hook /etc/pacman.d/hooks/
   mkdir -p /boot/efi/EFI/Linux
   ```
+  
+  * **Nano syntax light: **
+  * > `find /usr/share/nano/ -iname "*.nanorc" -exec echo include {} \; >> ~/.nanorc`
+  * 
