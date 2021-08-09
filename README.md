@@ -368,6 +368,6 @@ y
   mkdir -p /boot/efi/EFI/Linux
   ```
   
-  * **Nano syntax light: **
-  > `find /usr/share/nano/ -iname "*.nanorc" -exec echo include {} \; >> ~/.nanorc`
+* **Nano syntax light:**
+  >For configure `find /usr/share/nano/ -iname "*.nanorc" -exec echo include {} \; >> ~/.nanorc`
   
